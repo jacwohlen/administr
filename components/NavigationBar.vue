@@ -44,7 +44,8 @@ export default {
   data: () => ({
     links: [
       { name: 'Today', link: '/dashboard' },
-      { name: 'Trainings', link: '/dashboard/trainings' },
+      { name: 'Trainings', link: '/dashboard/trainings' },      
+      { name: 'Members', link: '/dashboard/members' },
       { name: 'Statistics', link: '/dashboard/statistics' },
     ],
   }),
