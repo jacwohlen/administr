@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Members</h1>
     <v-row>
       <v-col>
         <v-card>
@@ -28,13 +27,13 @@ import { administraStore } from '~/store'
   layout: 'DashboardLayout',
   async fetch() {
     // server side
-    await administraStore.fetchTrainings()
+    await administraStore.fetchAll()
   },
 })
 export default class CategoriesPage extends Vue {
   async mounted() {
     // client side
-    await administraStore.fetchTrainings()
+    await administraStore.fetchAll()
   }
 
   headers: any = [
