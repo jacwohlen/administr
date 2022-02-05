@@ -27,13 +27,13 @@ import { administraStore } from '~/store'
   layout: 'DashboardLayout',
   async fetch() {
     // server side
-    await administraStore.fetchAll()
+    await administraStore.init()
   },
 })
 export default class CategoriesPage extends Vue {
   async mounted() {
     // client side
-    await administraStore.fetchAll()
+    await administraStore.init()
   }
 
   headers: any = [

@@ -15,6 +15,9 @@
             <template v-slot:item.dateTo="{ item }">
               {{ item.dateTo | formatDate }}
             </template>
+            <template v-slot:item.info="{ item }">
+              {{ item }}
+            </template>
           </v-data-table>
         </v-card>
       </v-col>
@@ -30,9 +33,9 @@ import moment from 'moment'
 import { administraStore } from '~/store'
 // import { Pool } from '~/types/models'
 
-Vue.filter('formatDate', function (value: Date) {
-  if (value) {
-    return moment(value).format('ddd hh:mm')
+Vue.filter('formatDate', function (value: FirebaseFirestore.Timestamp) {
+  if (typeof value.toDate === 'function') {
+    return moment(value.toDate()).format('ddd hh:mm')
   }
 })
 
@@ -40,13 +43,13 @@ Vue.filter('formatDate', function (value: Date) {
   layout: 'DashboardLayout',
   async fetch() {
     // server side
-    await administraStore.fetchAll()
+    await administraStore.init()
   },
 })
 export default class CategoriesPage extends Vue {
   async mounted() {
     // client side
-    await administraStore.fetchAll()
+    await administraStore.init()
   }
 
   headers: any = [
@@ -54,6 +57,7 @@ export default class CategoriesPage extends Vue {
     { text: 'Start', value: 'dateFrom' },
     { text: 'End', value: 'dateTo' },
     { text: 'Sektion', value: 'section' },
+    { text: 'Info', value: 'info' },
   ]
 
   getTrainings() {
