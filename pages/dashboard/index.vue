@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1 class="text-h1">{{ today }}</h1>
+    <h1 class="text-h1">{{ todayStr }}</h1>
     <v-card>
       <v-card-title v-for="(t, idx) in trainings" :key="idx"
         >{{ t.title }}
         <v-list-item v-for="(m, idx2) in t.members" :key="idx2">
           <template v-slot:default="{ active }">
             <v-list-item-action>
-              <v-checkbox :input-value="active" color="primary"></v-checkbox>
+              <v-checkbox color="primary" @click="check(m, t)"></v-checkbox>
             </v-list-item-action>
             <v-list-item-content>
               {{ m.lastname }} {{ m.firstname }}
@@ -22,8 +22,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-
 import moment from 'moment'
+import { Member, Training } from '~/types/models'
+
 import { administraStore } from '~/store'
 
 @Component({
@@ -39,8 +40,12 @@ export default class CategoriesPage extends Vue {
     await administraStore.init()
   }
 
-  get today() {
+  get todayStr() {
     return moment().format('ddd, DD. MMM yyyy')
+  }
+
+  get today() {
+    return moment()
   }
 
   get trainings() {
