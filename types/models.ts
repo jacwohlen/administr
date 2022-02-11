@@ -7,8 +7,9 @@ export interface Member {
 export interface Training {
   id: string
   title: string
-  dateFrom: Date | null
-  dateTo: Date | null
+  dateFrom: string
+  dateTo: string
+  weekday: string
   section: string
   participants: Member[]
 }

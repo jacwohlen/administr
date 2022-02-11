@@ -1,22 +1,5 @@
 <template>
-  <div>
-    <h1 class="text-h1">{{ todayStr }}</h1>
-    <v-card>
-      <v-card-title v-for="(t, idx) in trainings" :key="idx"
-        >{{ t.title }}
-        <v-list-item v-for="(m, idx2) in t.members" :key="idx2">
-          <template #default>
-            <v-list-item-action>
-              <v-checkbox color="primary" @click="check(m, t)"></v-checkbox>
-            </v-list-item-action>
-            <v-list-item-content>
-              {{ m.lastname }} {{ m.firstname }}
-            </v-list-item-content>
-          </template>
-        </v-list-item>
-      </v-card-title>
-    </v-card>
-  </div>
+  <div>here you go</div>
 </template>
 
 <script lang="ts">

@@ -6,17 +6,21 @@
           <v-card-title>Trainings</v-card-title>
           <v-data-table
             :headers="headers"
-            :items="getTrainings()"
+            :items="trainings"
             item-key="title"
+            hide-default-footer
           >
-            <template v-slot:item.dateFrom="{ item }">
-              {{ item.dateFrom | formatDate }}
+            <template #item.title="{ item }">
+              <nuxt-link :to="'/dashboard/' + item.id">{{
+                item.title
+              }}</nuxt-link>
+              (id: {{ item.id }})
             </template>
-            <template v-slot:item.dateTo="{ item }">
-              {{ item.dateTo | formatDate }}
+            <template #item.dateFrom="{ item }">
+              {{ item.dateFrom }}
             </template>
-            <template v-slot:item.info="{ item }">
-              {{ item }}
+            <template #item.dateTo="{ item }">
+              {{ item.dateTo }}
             </template>
           </v-data-table>
         </v-card>
@@ -56,11 +60,10 @@ export default class CategoriesPage extends Vue {
     { text: 'Title', value: 'title' },
     { text: 'Start', value: 'dateFrom' },
     { text: 'End', value: 'dateTo' },
-    { text: 'Sektion', value: 'section' },
-    { text: 'Info', value: 'info' },
+    { text: 'Section', value: 'section' },
   ]
 
-  getTrainings() {
+  get trainings() {
     return administraStore.trainings
   }
 }

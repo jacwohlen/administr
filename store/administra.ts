@@ -15,7 +15,7 @@ export default class Administra extends VuexModule {
   trainings: Training[] = []
 
   training: Training | null = null
-  confirmedParticipants = null
+  confirmedParticipants: { members: Member[] } | null = null
 
   @Action({ rawError: true })
   async markAsNotPresent({
@@ -27,8 +27,6 @@ export default class Administra extends VuexModule {
     tId: string
     date: string
   }) {
-    // TODO: Use ID to compare and not compare firstname lastname
-    // Also when adding new name, add it to members and than add reference
     await firebase
       .firestore()
       .collection('trainings')
@@ -37,7 +35,7 @@ export default class Administra extends VuexModule {
       .doc(date)
       .update({
         members: this.confirmedParticipants.members.filter(
-          (p) => p.firstname !== m.firstname && p.lastname !== m.lastname
+          (p: Member) => p.id !== m.id
         ),
       })
   }
@@ -52,29 +50,21 @@ export default class Administra extends VuexModule {
     tId: string
     date: string
   }) {
-    const t = await firebase
+    const ref = firebase
       .firestore()
       .collection('trainings')
       .doc(tId)
       .collection('log')
       .doc(date)
-      .get()
+
+    const memberRef = firebase.firestore().collection('members').doc(m.id)
+    const t = await ref.get()
     if (t.exists) {
-      firebase
-        .firestore()
-        .collection('trainings')
-        .doc(tId)
-        .collection('log')
-        .doc(date)
-        .update({ members: firebase.firestore.FieldValue.arrayUnion({ ...m }) })
+      ref.update({
+        members: firebase.firestore.FieldValue.arrayUnion(memberRef),
+      })
     } else {
-      firebase
-        .firestore()
-        .collection('trainings')
-        .doc(tId)
-        .collection('log')
-        .doc(date)
-        .set({ members: firebase.firestore.FieldValue.arrayUnion({ ...m }) })
+      ref.set({ members: firebase.firestore.FieldValue.arrayUnion(memberRef) })
     }
   }
 
@@ -88,6 +78,11 @@ export default class Administra extends VuexModule {
     lastname: string
     firstname: string
   }) {
+    const ref = firebase.firestore().collection('members').doc()
+    const memberId = ref.id
+
+    await this.addMember({ id: memberId, lastname, firstname })
+
     // ensure the training exists
     const t = await firebase
       .firestore()
@@ -100,10 +95,7 @@ export default class Administra extends VuexModule {
         .collection('trainings')
         .doc(trainingId)
         .update({
-          participants: firebase.firestore.FieldValue.arrayUnion({
-            lastname,
-            firstname,
-          }),
+          participants: firebase.firestore.FieldValue.arrayUnion(ref),
         })
     } else {
       firebase
@@ -120,8 +112,23 @@ export default class Administra extends VuexModule {
   }
 
   @Action({ rawError: true })
+  async addMember({
+    id,
+    lastname,
+    firstname,
+  }: {
+    id: string
+    lastname: string
+    firstname: string
+  }) {
+    await firebase.firestore().collection('members').doc(id).set({
+      lastname,
+      firstname,
+    })
+  }
+
+  @Action({ rawError: true })
   createTraining(training: Training) {
-    console.log('createTraining called', training)
     firebase
       .firestore()
       .collection('trainings')
@@ -163,8 +170,7 @@ export default class Administra extends VuexModule {
 
   @Action({ rawError: true })
   initPresentList({ trainingId, date }: { trainingId: string; date: string }) {
-    console.log('initPresentList')
-    console.log('got trainingId: ' + trainingId + ' date: ' + date)
+    if (!date) return
     const action = firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
