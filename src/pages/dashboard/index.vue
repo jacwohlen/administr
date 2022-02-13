@@ -1,15 +1,20 @@
 <template>
   <div>
-    <h1>{{ todayStr }}</h1>
-    <v-card v-for="(t, idx) in trainings" :key="idx">
-      <v-card-title> {{ t.title }} (id: {{ t.id }}) </v-card-title>
+    <h1><v-icon>mdi-calendar-check</v-icon> {{ title }}</h1>
+    <v-card v-for="(t, idx) in trainings" :key="idx" class="mb-3">
+      <v-card-title>
+        {{ t.title }}
+        <v-subheader>(id: {{ t.id }})</v-subheader>
+      </v-card-title>
       <v-card-subtitle>
-        <v-chip>{{ t.section }}</v-chip></v-card-subtitle
-      >
+        {{ t.weekday }}, {{ t.dateFrom }} - {{ t.dateTo }}
+        <v-chip small>{{ t.section }}</v-chip>
+      </v-card-subtitle>
       <v-card-actions>
-        <nuxt-link :to="'dashboard/' + t.id + '/' + todayStr"
-          >Present List</nuxt-link
-        >
+        <v-btn text :to="'dashboard/' + t.id + '/' + todayStr">
+          <v-icon left> mdi-format-list-checks </v-icon>
+          Present List
+        </v-btn>
       </v-card-actions>
     </v-card>
   </div>
@@ -35,8 +40,12 @@ export default class CategoriesPage extends Vue {
     await administraStore.init()
   }
 
+  get title() {
+    return this.today.format('ddd, LL')
+  }
+
   get todayStr() {
-    return moment().format('yyyy-MM-DD')
+    return this.today.format('yyyy-MM-DD')
   }
 
   get today() {
