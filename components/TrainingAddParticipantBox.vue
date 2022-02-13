@@ -21,6 +21,49 @@
         </v-list-item-action>
       </template>
     </v-list-item>
+    <v-list-item>
+      <v-combobox
+        v-model="name"
+        :items="members"
+        :search-input.sync="search"
+        item-text="lastname"
+        cache-items
+        flat
+        :hide-no-data="!search"
+        hide-details
+        label="Add participant"
+        solo-inverted
+        auto-select-first
+      >
+        <template #item="data">
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ data.item.lastname }}
+              {{ data.item.firstname }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </template>
+        <template #append-item>
+          <v-list-tile
+            v-if="search"
+            @click="model.push({ text: search }), (search = '')"
+          >
+            <span class="subheading">+ Add</span>
+            <v-chip label small>
+              {{ search }}
+            </v-chip>
+          </v-list-tile>
+        </template>
+        <template #no-data>
+          <v-list-tile>
+            <span class="subheading">+ Add</span>
+            <v-chip label small>
+              {{ search }}
+            </v-chip>
+          </v-list-tile>
+        </template>
+      </v-combobox>
+    </v-list-item>
   </v-list>
 </template>
 
@@ -42,7 +85,19 @@ const PrefilledProps = Vue.extend({
 export default class extends PrefilledProps {
   name: string = ''
 
+  get members() {
+    return administraStore.members
+  }
+  search: string = ''
+
   addParticipant() {
+    let o = { firstname: '', lastname: '' }
+    if (typeof this.name !== 'object') {
+      o = this.name
+    } else {
+      o.lastname = this.name
+    }
+
     administraStore
       .addParticipant({
         trainingId: this.trainingId,
