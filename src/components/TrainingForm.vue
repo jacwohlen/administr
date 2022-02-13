@@ -2,15 +2,13 @@
   <div>
     <v-list-item v-if="training && training.title">
       <v-list-item-content>
-        <v-list-item-title class="text-h6"
-          >{{ training.title }}
-          <v-chip small>{{ training.section }}</v-chip></v-list-item-title
-        >
-        <v-list-item-subtitle
-          >{{ training.weekday }}, {{ training.dateFrom }}-{{
-            training.dateTo
-          }}</v-list-item-subtitle
-        >
+        <v-list-item-title class="text-h6">
+          {{ training.title }}
+          <v-chip small>{{ training.section }}</v-chip>
+        </v-list-item-title>
+        <v-list-item-subtitle>
+          {{ training.weekday }}, {{ training.dateFrom }}-{{ training.dateTo }}
+        </v-list-item-subtitle>
       </v-list-item-content>
       <v-list-item-action>
         <v-list-item-action-text>
@@ -23,14 +21,14 @@
         <v-subheader>
           id: {{ trainingId }}
           <v-btn plain color="primary" @click="editTraining">
-            Set Training Data
+            Set Training Details
           </v-btn>
         </v-subheader>
       </v-col>
     </v-row>
-    <v-dialog v-model="dialog.show" persistent max-width="600px">
+    <v-dialog v-model="dialog.show" persistent>
       <v-card>
-        <v-card-title> Training Meta Data </v-card-title>
+        <v-card-title> Training Details </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
@@ -38,30 +36,35 @@
                 <v-text-field
                   v-model="dialog.title"
                   label="Title"
+                  dense
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   v-model="dialog.section"
                   label="Section"
+                  dense
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   v-model="dialog.dateFrom"
                   label="Training Start"
+                  dense
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   v-model="dialog.dateTo"
                   label="Training End"
+                  dense
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   v-model="dialog.weekday"
                   label="Weekday"
+                  dense
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -69,9 +72,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog.show = false">
-            Cancel
-          </v-btn>
+          <v-btn text @click="dialog.show = false"> Cancel </v-btn>
           <v-btn color="primary" text @click="updateTraining"> Save </v-btn>
         </v-card-actions>
       </v-card>

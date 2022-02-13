@@ -1,14 +1,29 @@
 <template>
   <div>
-    <h1><v-icon>mdi-calendar-check</v-icon> {{ title }}</h1>
     <v-card>
       <v-card-text>
-        <training-form :trainingId="trainingId" />
-        <v-divider></v-divider>
-        <training-participant-list :trainingId="trainingId" :date="date" />
-        <training-add-participant-box :trainingId="trainingId" />
+        <v-row>
+          <v-col cols="3" align="right">
+            <v-btn text @click="backWeek"
+              ><v-icon>mdi-arrow-left</v-icon> Week</v-btn
+            >
+          </v-col>
+          <v-col align="center">
+            <h1 @click="today" class="text-h5">{{ title }}</h1>
+          </v-col>
+          <v-col cols="3" align="left">
+            <v-btn text @click="forwardWeek"
+              ><v-icon>mdi-arrow-right</v-icon> Week</v-btn
+            >
+          </v-col>
+        </v-row>
       </v-card-text>
     </v-card>
+    <training-form :trainingId="trainingId" />
+    <v-divider></v-divider>
+    <training-participant-list :trainingId="trainingId" :date="date" />
+    <training-add-participant-box :trainingId="trainingId" />
+    <v-btn text @click="back"><v-icon>mdi-arrow-left</v-icon> Back</v-btn>
   </div>
 </template>
 
@@ -27,9 +42,33 @@ export default class PresentListPage extends Vue {
   trainingId: string = '' // set via asyncData
   date: string = '' // set via params asycData
 
+  dateM: moment.Moment = moment()
+
+  mounted() {
+    this.dateM = moment(this.date, 'yyyy-MM-DD')
+  }
+
   get title() {
-    const d = moment(this.date, 'yyyy-MM-DD')
-    return d.format('ddd, LL')
+    return this.dateM.format('ddd, ll')
+  }
+
+  today() {
+    const s = moment().format('yyyy-MM-DD')
+    this.$router.push(s)
+  }
+
+  backWeek() {
+    const s = this.dateM.subtract(7, 'days').format('yyyy-MM-DD')
+    this.$router.push(s)
+  }
+
+  forwardWeek() {
+    const s = this.dateM.add(7, 'days').format('yyyy-MM-DD')
+    this.$router.push(s)
+  }
+
+  back() {
+    this.$router.back()
   }
 }
 </script>
