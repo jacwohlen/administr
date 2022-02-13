@@ -4,9 +4,12 @@
     <v-card v-for="(t, idx) in trainings" :key="idx">
       <v-card-title> {{ t.title }} (id: {{ t.id }}) </v-card-title>
       <v-card-subtitle>
-        <v-chip>{{ t.section }}</v-chip></v-card-subtitle>
+        <v-chip>{{ t.section }}</v-chip></v-card-subtitle
+      >
       <v-card-actions>
-        <nuxt-link :to="'dashboard/' + t.id + '/' + todayStr">Present List</nuxt-link>
+        <nuxt-link :to="'dashboard/' + t.id + '/' + todayStr"
+          >Present List</nuxt-link
+        >
       </v-card-actions>
     </v-card>
   </div>

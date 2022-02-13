@@ -12,9 +12,15 @@
 <style scoped>
 .content {
   max-width: 1200px;
-  min-width: 1200px;
-  margin: 0 auto;
   background-color: white;
+}
+
+@media only screen and (min-width: 1200px) {
+  .content {
+    max-width: 1200px;
+    min-width: 1200px;
+    margin: 0 auto;
+  }
 }
 
 .background {
