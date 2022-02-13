@@ -1,23 +1,21 @@
-# Administra - A Judo Tournament Webapp
+# Administra - Absense Tracker
 
-Administra is an realtime web application to organize a judo tournament.
-This project is at the beginning but the vision / mission is ambitious.
+Administra allows to create training sessions and track people's
+attendance.
 
 ## Features
 
-- Registration of judo fighters
-- Checkin at the tournament (weight in)
-- Automatically creates categories
-- Creates matches list based on `bresil` and `round robin`
-- Scoring Screen for the Audience
-- Operator Dashboard to control the fight
+- Login using Google Auth or Email/Passowrd
+- Create training classes with meta data (title, start, end, weekday, section)
+- Add participants to a training class
+- Mark participants as present for a particular date
+- Statistics: View attendance of a training class per year
 - ...
 
 ## Technical Aspects
 
 Current stack: npm, node, nuxt, vuejs, vuex, vuetify
-
-Backend: firebase
+Backend: firebase (auth, firestore, hosting, functions)
 
 ## Contribution
 
@@ -74,41 +72,31 @@ or
 npm run test -- --silent=false --runInBand --forceExit
 ```
 
-Outlook
-TODO: run docker container instead
-docker pull andreysenov/firebase-tools
-=> https://github.com/AndreySenov/firebase-tools-docker/blob/main/doc/guide/running_firebase_emulators.md
-docker run -p 9199:9199 -p 9099:9099 -p 9005:9005 -p 9000:9000 -p 8085:8085 -p 8080:8080 -p 5001:5001 -p 5000:5000 -p 4000:4000 -v /path/to/project:/home/node --name firebase-tools andreysenov/firebase-tools
+## Deployment
 
-## Known Issues:
+We use firebase hosting api and function api to deploy the website.
 
-[ ] Tests are do not support execution in parallel. All tests share the same firebase emulator. Run `npm run test -- --silent=false --runInBand` to execute in sequence.
-[ ] Tests execution with `--forceExit`, as some async function do not proberly return... might be a jest issue
+1. Install `npm install -g firebase-tools`
+2. Setup environment variables for the function
 
-## Troubleshooting
-
-1. Check NPM version and Node version (
+Add the environment variable (without `export` to `functions/.env`
 
 ```
-npm --version
-6.14.14
-
-node --version
-v14.17.5
+APP_FIREBASE_API_KEY=
+APP_FIREBASE_AUTH_DOMAIN=
+APP_FIREBASE_DATABASE_URL=
+APP_FIREBASE_PROJECT_ID=
+APP_FIREBASE_STORAGE_BUCKET=
+APP_FIREBASE_MESSAGING_SENDER_ID=
+APP_FIREBASE_APP_ID=
 ```
 
-Tip use `nvm install --lts` to install long term support version of `node`.
+3. Run `firebase deploy --only functions,hosting`
 
-2. Check missing peer dependency `npm list` and install them manually
+** Attention: ** Make sure new npm dependencies are added to `package.json` and also to `functions/package.json`
 
-```
-...
-│ └── stylelint-config-recommended@3.0.0
-└─┬ vuedraggable@2.24.3
-  └── sortablejs@1.10.2
+Reference: https://medium.com/@sirofjelly/deploying-a-nuxt-ssr-server-side-rendering-app-to-google-firebase-5d90117167db
 
-npm ERR! peer dep missing: jquery@1.9.1 - 3, required by bootstrap@4.6.0
-npm ERR! peer dep missing: eslint@^5.0.0 || ^6.0.0, required by eslint-plugin-vue@6.2.2
-npm ERR! peer dep missing: jquery@1.9.1 - 3, required by bootstrap@4.6.0
-npm ERR! peer dep missing: eslint@^5.0.0 || ^6.0.0, required by eslint-plugin-vue@6.2.2
-```
+## Tips
+
+- Tip use `nvm install --lts` to install long term support version of `node`.
