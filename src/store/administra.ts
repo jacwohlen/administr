@@ -33,7 +33,7 @@ export default class Administra extends VuexModule {
       .doc(tId)
       .collection('log')
       .doc(date)
-      .update({
+      .set({
         members: participants,
       })
   }

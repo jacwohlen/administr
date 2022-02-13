@@ -1,25 +1,23 @@
 <template>
   <div>
-    <v-row v-if="training && training.title">
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title
-            >{{ training.title }}
-            <v-chip small>{{ training.section }}</v-chip></v-list-item-title
-          >
-          <v-list-item-subtitle
-            >{{ training.weekday }} {{ training.dateFrom }}-{{
-              training.dateTo
-            }}</v-list-item-subtitle
-          >
-        </v-list-item-content>
-        <v-list-item-action>
-          <v-list-item-action-text>
-            <v-btn plain color="primary" @click="editTraining"> Edit </v-btn>
-          </v-list-item-action-text>
-        </v-list-item-action>
-      </v-list-item>
-    </v-row>
+    <v-list-item v-if="training && training.title">
+      <v-list-item-content>
+        <v-list-item-title class="text-h6"
+          >{{ training.title }}
+          <v-chip small>{{ training.section }}</v-chip></v-list-item-title
+        >
+        <v-list-item-subtitle
+          >{{ training.weekday }}, {{ training.dateFrom }}-{{
+            training.dateTo
+          }}</v-list-item-subtitle
+        >
+      </v-list-item-content>
+      <v-list-item-action>
+        <v-list-item-action-text>
+          <v-btn plain color="primary" @click="editTraining"> Edit </v-btn>
+        </v-list-item-action-text>
+      </v-list-item-action>
+    </v-list-item>
     <v-row v-else>
       <v-col>
         <v-subheader>
@@ -124,11 +122,13 @@ export default class extends PrefilledProps {
   }
 
   editTraining() {
-    this.dialog.title = this.training!!.title
-    this.dialog.section = this.training!!.section
-    this.dialog.dateFrom = this.training!!.dateFrom
-    this.dialog.dateTo = this.training!!.dateTo
-    this.dialog.weekday = this.training!!.weekday
+    if (this.training) {
+      this.dialog.title = this.training!!.title
+      this.dialog.section = this.training!!.section
+      this.dialog.dateFrom = this.training!!.dateFrom
+      this.dialog.dateTo = this.training!!.dateTo
+      this.dialog.weekday = this.training!!.weekday
+    }
     this.dialog.show = true
   }
 
