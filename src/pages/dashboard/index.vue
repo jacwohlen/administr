@@ -11,7 +11,7 @@
         <v-chip small>{{ t.section }}</v-chip>
       </v-card-subtitle>
       <v-card-actions>
-        <v-btn text :to="'dashboard/' + t.id + '/' + todayStr">
+        <v-btn color="primary" text :to="'dashboard/' + t.id + '/' + todayStr">
           <v-icon left> mdi-format-list-checks </v-icon>
           Present List
         </v-btn>
