@@ -8,7 +8,6 @@
           <training-form :trainingId="trainingId" />
           <v-divider></v-divider>
           <training-participant-list :trainingId="trainingId" :date="date" />
-          <!-- <v-divider></v-divider> -->
           <training-add-participant-box :trainingId="trainingId" />
         </v-card>
       </v-col>

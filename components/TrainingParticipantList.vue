@@ -1,18 +1,10 @@
 <template>
-  <!-- <p v-if="$fetchState.pending">Fetching mountains...</p>
-  <p v-else-if="$fetchState.error">An error occurred :(</p>
-  <div v-else> -->
-    <div>
+  <div>
     <v-list-item v-for="m in participants" :key="m.id">
       <template #default>
         <v-list-item-action>
-          <v-checkbox
-            v-if="date"
-            v-model="selected"
-            color="primary"
-            :value="m"
-            @click="check(m)"
-          ></v-checkbox>
+          <v-checkbox v-if="date" v-model="selected" color="primary" :value="m">
+          </v-checkbox>
           <v-icon v-else>mdi-account-outline</v-icon>
         </v-list-item-action>
         <v-list-item-content>
@@ -58,13 +50,17 @@ export default class extends PrefilledProps {
       trainingId: this.trainingId,
       date: this.date,
     })
-
-    // add selected
-    if (administraStore.confirmedParticipants)
-      this.selected = administraStore.confirmedParticipants.members
+    this.$nuxt.$loading.finish()
   }
 
-  selected: Member[] = []
+  get selected(): Member[] {
+    if (!administraStore.confirmedParticipants) return []
+    return administraStore.confirmedParticipants.members
+  }
+
+  set selected(newValue) {
+    this.check(newValue)
+  }
 
   get participants() {
     if (!administraStore.training) return
@@ -72,20 +68,12 @@ export default class extends PrefilledProps {
     return administraStore.training.participants
   }
 
-  check(m: Member) {
-    if (this.selected.includes(m)) {
-      administraStore.markAsPresent({
-        m,
-        tId: this.trainingId,
-        date: this.date,
-      })
-    } else {
-      administraStore.markAsNotPresent({
-        m,
-        tId: this.trainingId,
-        date: this.date,
-      })
-    }
+  check(participants: Member[]) {
+    administraStore.setParticipants({
+      participants,
+      tId: this.trainingId,
+      date: this.date,
+    })
   }
 }
 </script>

@@ -18,12 +18,12 @@ export default class Administra extends VuexModule {
   confirmedParticipants: { members: Member[] } | null = null
 
   @Action({ rawError: true })
-  async markAsNotPresent({
-    m,
+  async setParticipants({
+    participants,
     tId,
     date,
   }: {
-    m: Member
+    participants: Member[]
     tId: string
     date: string
   }) {
@@ -34,38 +34,8 @@ export default class Administra extends VuexModule {
       .collection('log')
       .doc(date)
       .update({
-        members: this.confirmedParticipants.members.filter(
-          (p: Member) => p.id !== m.id
-        ),
+        members: participants,
       })
-  }
-
-  @Action({ rawError: true })
-  async markAsPresent({
-    m,
-    tId,
-    date,
-  }: {
-    m: Member
-    tId: string
-    date: string
-  }) {
-    const ref = firebase
-      .firestore()
-      .collection('trainings')
-      .doc(tId)
-      .collection('log')
-      .doc(date)
-
-    const memberRef = firebase.firestore().collection('members').doc(m.id)
-    const t = await ref.get()
-    if (t.exists) {
-      ref.update({
-        members: firebase.firestore.FieldValue.arrayUnion(memberRef),
-      })
-    } else {
-      ref.set({ members: firebase.firestore.FieldValue.arrayUnion(memberRef) })
-    }
   }
 
   @Action({ rawError: true })
@@ -185,6 +155,7 @@ export default class Administra extends VuexModule {
         ),
       ])
     }) as Function
+    console.log('confirmedParticipants set!')
     return action(this.context)
   }
 }

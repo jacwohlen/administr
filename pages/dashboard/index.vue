@@ -1,20 +1,13 @@
 <template>
   <div>
-    <h1 class="text-h1">{{ todayStr }}</h1>
-    <v-card>
-      <v-card-title v-for="(t, idx) in trainings" :key="idx"
-        >{{ t.title }}
-        <v-list-item v-for="(m, idx2) in t.members" :key="idx2">
-          <template #default>
-            <v-list-item-action>
-              <v-checkbox color="primary" @click="check(m, t)"></v-checkbox>
-            </v-list-item-action>
-            <v-list-item-content>
-              {{ m.lastname }} {{ m.firstname }}
-            </v-list-item-content>
-          </template>
-        </v-list-item>
-      </v-card-title>
+    <h1>{{ todayStr }}</h1>
+    <v-card v-for="(t, idx) in trainings" :key="idx">
+      <v-card-title> {{ t.title }} (id: {{ t.id }}) </v-card-title>
+      <v-card-subtitle>
+        <v-chip>{{ t.section }}</v-chip></v-card-subtitle>
+      <v-card-actions>
+        <nuxt-link :to="'dashboard/' + t.id + '/' + todayStr">Present List</nuxt-link>
+      </v-card-actions>
     </v-card>
   </div>
 </template>
@@ -40,7 +33,7 @@ export default class CategoriesPage extends Vue {
   }
 
   get todayStr() {
-    return moment().format('ddd, DD. MMM yyyy')
+    return moment().format('yyyy-MM-DD')
   }
 
   get today() {
