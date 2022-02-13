@@ -32,13 +32,13 @@ In case you see the potential and also believe in open source please drop me a l
 2. Source environment with data from firebase account
 
 ```
-export FIREBASE_API_KEY=
-export FIREBASE_AUTH_DOMAIN=
-export FIREBASE_DATABASE_URL=
-export FIREBASE_PROJECT_ID=
-export FIREBASE_STORAGE_BUCKET=
-export FIREBASE_MESSAGING_SENDER_ID=
-export FIREBASE_APP_ID=
+export APP_FIREBASE_API_KEY=
+export APP_FIREBASE_AUTH_DOMAIN=
+export APP_FIREBASE_DATABASE_URL=
+export APP_FIREBASE_PROJECT_ID=
+export APP_FIREBASE_STORAGE_BUCKET=
+export APP_FIREBASE_MESSAGING_SENDER_ID=
+export APP_FIREBASE_APP_ID=
 ```
 
 ```bash
