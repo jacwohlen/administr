@@ -1,4 +1,12 @@
 export default {
+  srcDir: 'src/',
+  buildDir: 'functions/.nuxt',
+
+  // Build Configuration (https://go.nuxtjs.dev/config-build)
+  build: {
+    extractCSS: true,
+  },
+
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'administra',
@@ -97,7 +105,4 @@ export default {
   router: {
     middleware: ['router-auth'],
   },
-
-  // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
 }
