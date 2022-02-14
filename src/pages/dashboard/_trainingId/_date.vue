@@ -1,25 +1,27 @@
 <template>
   <div>
-    <v-card>
-      <v-card-text>
-        <v-row>
-          <v-col cols="3" align="right">
-            <v-btn text @click="backWeek"
-              ><v-icon>mdi-arrow-left</v-icon> Week</v-btn
-            >
-          </v-col>
-          <v-col align="center">
-            <h1 class="text-h5" @click="today">{{ title }}</h1>
-          </v-col>
-          <v-col cols="3" align="left">
-            <v-btn text @click="forwardWeek"
-              ><v-icon>mdi-arrow-right</v-icon> Week</v-btn
-            >
-          </v-col>
-        </v-row>
-      </v-card-text>
-    </v-card>
     <training-form :trainingId="trainingId" />
+    <v-divider></v-divider>
+    <v-row>
+      <v-col align="right" class="mx-0 px-0">
+        <v-btn text class="mr-0 pr-0" @click="backWeek">
+          <v-icon>mdi-arrow-left</v-icon> Week
+        </v-btn>
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col align="center" class="px-0">
+        <v-btn text class="px-0" color="primary" @click="today">
+          {{ title }}
+        </v-btn>
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col align="left" class="mx-0 px-0">
+        <v-btn text class="ml-0 pl-0" @click="forwardWeek">
+          Week
+          <v-icon>mdi-arrow-right</v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
     <v-divider></v-divider>
     <training-participant-list :trainingId="trainingId" :date="date" />
     <training-add-participant-box :trainingId="trainingId" />
@@ -49,7 +51,11 @@ export default class PresentListPage extends Vue {
   }
 
   get title() {
-    return this.dateM.format('ddd, ll')
+    return this.dateM.format('L')
+  }
+
+  get day() {
+    return this.dateM.format('dddd')
   }
 
   today() {

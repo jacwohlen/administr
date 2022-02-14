@@ -17,16 +17,33 @@ export default class Administra extends VuexModule {
   training: Training | null = null
   confirmedParticipants: { members: Member[] } | null = null
 
+  trainingsByWeekday: Training[] = []
+
+  get getTrainingsByWeekday() {
+    return async (weekday: string) => {
+      const querySnapshot = await firebase
+        .firestore()
+        .collection('trainings')
+        .where('weekday', '==', weekday)
+        .get()
+      const d = querySnapshot.docs.map((doc) => doc.data())
+      return d
+    }
+  }
+
   @Action({ rawError: true })
   async setParticipants({
-    participants,
+    participantsIds,
     tId,
     date,
   }: {
-    participants: Member[]
+    participantsIds: string[]
     tId: string
     date: string
   }) {
+    const b = participantsIds.map((el) =>
+      firebase.firestore().doc('members/' + el)
+    )
     await firebase
       .firestore()
       .collection('trainings')
@@ -34,7 +51,7 @@ export default class Administra extends VuexModule {
       .collection('log')
       .doc(date)
       .set({
-        members: participants,
+        members: b,
       })
   }
 
@@ -155,7 +172,23 @@ export default class Administra extends VuexModule {
         ),
       ])
     }) as Function
-    console.log('confirmedParticipants set!')
+    return action(this.context)
+  }
+
+  @Action({ rawError: true })
+  initTrainingByWeekday(weekday: string) {
+    const action = firestoreAction(({ bindFirestoreRef }) => {
+      return Promise.all([
+        bindFirestoreRef(
+          'trainingsByWeekday',
+          firebase
+            .firestore()
+            .collection('trainings')
+            .where('weekday', '==', weekday),
+          { wait: true }
+        ),
+      ])
+    }) as Function
     return action(this.context)
   }
 }

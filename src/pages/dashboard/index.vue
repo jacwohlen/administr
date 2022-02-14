@@ -1,11 +1,12 @@
 <template>
   <div>
+    <!-- <h1 align="center" class="text-h5" @click="goToday">{{ title }}</h1> -->
     <h1 align="center" class="text-h5" @click="goToday">{{ title }}</h1>
-    <v-row>
+    <v-row class="pt-1">
       <v-col align="right">
-        <v-btn text @click="goYesterday"
-          ><v-icon>mdi-arrow-left</v-icon> Yesterday</v-btn
-        >
+        <v-btn text @click="goYesterday">
+          <v-icon>mdi-arrow-left</v-icon> Yesterday
+        </v-btn>
       </v-col>
       <v-spacer></v-spacer>
       <v-col align="left">
@@ -16,7 +17,16 @@
       </v-col>
     </v-row>
     <v-list>
-      <v-list-item v-for="(t, idx) in trainings" :key="idx" class="mb-3">
+      <v-list-item v-if="trainings.length === 0">
+        <v-list-item-title align="center"> No Trainings </v-list-item-title>
+      </v-list-item>
+      <v-list-item
+        v-for="(t, idx) in trainings"
+        v-else
+        :key="idx"
+        :to="'dashboard/' + t.id + '/' + todayStr"
+        class="mb-3"
+      >
         <v-list-item-content>
           <v-list-item-title v-if="t.title">
             {{ t.title }}
@@ -45,60 +55,59 @@
 
 <script lang="ts">
 import Vue from 'vue'
+// FIXME: Rewrite with vue-class-component
 import Component from 'vue-class-component'
 import moment from 'moment'
 
+import { Training } from '~/types/models'
 import { administraStore } from '~/store'
 
 @Component({
   layout: 'DashboardLayout',
   async fetch() {
-    // server side
-    await administraStore.init()
+    // @ts-ignore
+    await administraStore.initTrainingByWeekday(this.weekday)
   },
 })
 export default class extends Vue {
-  async mounted() {
-    // client side
-    await administraStore.init()
+  date = moment()
+
+  get trainings(): Training[] {
+    return administraStore.trainingsByWeekday
   }
 
-  // FIX: why is moment becoming a string in title()
-  // it should be an object of type moment as defined here
-  // that's why moment(this.date) in all the functions
-  date: moment.Moment = moment()
-
-  get title() {
+  get title(): string {
     const d = moment(this.date)
-    return d.format('ddd, LL')
+    return d.calendar()
   }
 
-  get todayStr() {
-    const d = moment(this.date)
+  get todayStr(): string {
+    const self = this
+    const d = moment(self.date)
     return d.format('yyyy-MM-DD')
   }
 
-  get weekday() {
-    const d = moment(this.date)
-    return d.format('DDD')
-  }
-
-  get trainings() {
-    return administraStore.trainings
+  get weekday(): string {
+    const self = this
+    const d = moment(self.date)
+    return d.format('dddd')
   }
 
   goTomorrow() {
     const d = moment(this.date)
     this.date = d.add(1, 'days')
+    this.$fetch()
   }
 
   goYesterday() {
     const d = moment(this.date)
     this.date = d.subtract(1, 'days')
+    this.$fetch()
   }
 
   goToday() {
     this.date = moment()
+    this.$fetch()
   }
 }
 </script>
