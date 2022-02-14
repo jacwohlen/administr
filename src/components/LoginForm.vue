@@ -31,14 +31,24 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-btn plain @click="view = View.ForgotPasswordView">
-          Forgot Password
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn color="secondary" @click="view = View.CreateAccountView">
-          Create Account
-        </v-btn>
-        <v-btn :disabled="!valid" color="primary" @click="login">Login</v-btn>
+        <v-row dense>
+          <v-col>
+            <v-btn plain @click="view = View.ForgotPasswordView">
+              Forgot Password
+            </v-btn>
+          </v-col>
+          <v-spacer></v-spacer>
+          <v-col>
+            <v-btn color="secondary" @click="view = View.CreateAccountView">
+              Create Account
+            </v-btn>
+          </v-col>
+          <v-col>
+            <v-btn :disabled="!valid" color="primary" @click="login">
+              Login
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-card-actions>
     </div>
 
@@ -78,13 +88,19 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn plain @click="view = View.LoginView">
-          Already have an Account
-        </v-btn>
-        <v-btn :disabled="!valid" color="primary" @click="createAccount"
-          >Create Account</v-btn
-        >
+        <v-row dense>
+          <v-spacer></v-spacer>
+          <v-col>
+            <v-btn plain @click="view = View.LoginView">
+              Already have an Account
+            </v-btn>
+          </v-col>
+          <v-col>
+            <v-btn :disabled="!valid" color="primary" @click="createAccount">
+              Create Account
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-card-actions>
     </div>
 
@@ -104,9 +120,15 @@
         </v-form>
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn plain @click="view = View.LoginView">Go back go login</v-btn>
-        <v-btn color="primary" to="/">Reset Account</v-btn>
+        <v-row dense align-content="right">
+          <v-spacer></v-spacer>
+          <v-col>
+            <v-btn plain @click="view = View.LoginView">Go back go login</v-btn>
+          </v-col>
+          <v-col>
+            <v-btn color="primary" to="/">Reset Account</v-btn>
+          </v-col>
+        </v-row>
       </v-card-actions>
     </div>
   </v-card>
