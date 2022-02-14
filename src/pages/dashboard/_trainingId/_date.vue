@@ -9,7 +9,7 @@
             >
           </v-col>
           <v-col align="center">
-            <h1 @click="today" class="text-h5">{{ title }}</h1>
+            <h1 class="text-h5" @click="today">{{ title }}</h1>
           </v-col>
           <v-col cols="3" align="left">
             <v-btn text @click="forwardWeek"
