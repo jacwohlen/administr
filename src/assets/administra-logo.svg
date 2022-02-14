@@ -9,6 +9,9 @@
    id="svg8"
    inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
    sodipodi:docname="administra-logo.svg"
+   inkscape:export-filename="/Users/kraeki/work/jacwohlen.ch/administra/src/assets/administra-logo.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,9 +28,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="21.785714"
-     inkscape:cy="60"
+     inkscape:zoom="6.6038838"
+     inkscape:cx="86.615697"
+     inkscape:cy="94.186999"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -58,21 +61,16 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-16.312881,-54.215191)">
-    <g
-       id="g11"
-       transform="translate(0,-3.0199764)">
-      <path
-         id="path195"
-         style="fill:#ff0000;fill-rule:evenodd;stroke-width:1.03561"
-         inkscape:transform-center-y="-6.4120104"
-         d="M 83.951172,22.828125 41.974609,95.53125 0,168.23438 h 26.666016 l 15.476562,-26.80665 41.97461,-72.703121 41.974612,72.703121 15.47656,26.80665 h 26.33203 L 125.92578,95.53125 Z"
-         transform="matrix(0.26458333,0,0,0.26458333,16.312881,54.215191)" />
-      <path
-         id="path195-37"
-         style="fill:#ff0000;fill-rule:evenodd;stroke-width:1.03561"
-         inkscape:transform-center-y="-6.4120104"
-         d="m 84.117188,93.011719 -41.97461,72.703121 -1.455078,2.51954 h 86.85938 l -1.45508,-2.51954 z"
-         transform="matrix(0.26458333,0,0,0.26458333,16.312881,54.215191)" />
-    </g>
+    <path
+       id="path195"
+       style="fill:#ff0000;fill-rule:evenodd;stroke-width:1.03561"
+       inkscape:transform-center-y="-6.4120104"
+       d="M 83.951172 11.414062 L 41.974609 84.117188 L 14.423828 131.83594 A 83.950001 83.950001 0 0 0 30.835938 149.5957 L 42.142578 130.01367 L 84.117188 57.310547 L 126.0918 130.01367 L 137.09961 149.08008 A 83.950001 83.950001 0 0 0 153.21484 131.38281 L 125.92578 84.117188 L 83.951172 11.414062 z "
+       transform="matrix(0.26458333,0,0,0.26458333,16.312881,54.215191)" />
+    <path
+       id="path195-37"
+       style="fill:#ff0000;fill-rule:evenodd;stroke-width:0.274005"
+       inkscape:transform-center-y="-6.4120104"
+       d="m 38.568887,75.804565 -11.105782,19.236034 -0.38499,0.666628 h 22.981544 l -0.38499,-0.666628 z" />
   </g>
 </svg>
