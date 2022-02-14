@@ -1,31 +1,33 @@
 <template>
   <div>
-    <v-row>
-      <v-col>
-        <v-card>
-          <v-card-title>Trainings</v-card-title>
-          <v-data-table
-            :headers="headers"
-            :items="trainings"
-            item-key="title"
-            hide-default-footer
-          >
-            <template #item.title="{ item }">
-              <nuxt-link :to="'/dashboard/' + item.id">{{
-                item.title
-              }}</nuxt-link>
-              (id: {{ item.id }})
-            </template>
-            <template #item.dateFrom="{ item }">
-              {{ item.dateFrom }}
-            </template>
-            <template #item.dateTo="{ item }">
-              {{ item.dateTo }}
-            </template>
-          </v-data-table>
-        </v-card>
-      </v-col>
-    </v-row>
+    <h1 align="center" class="text-h5">All Trainings</h1>
+    <v-data-table
+      class="hidden-sm-and-down"
+      :items="trainings"
+      :headers="headers"
+      hide-default-footer
+      disable-sort
+    >
+    </v-data-table>
+    <v-list class="hidden-md-and-up">
+      <v-list-item
+        v-for="(t, idx) in trainings"
+        :key="idx"
+        class="mb-3"
+        two-line
+      >
+        <v-list-item-content>
+          <v-list-item-title v-if="t.title">
+            {{ t.title }} <small>(id: {{ t.id }})</small>
+          </v-list-item-title>
+          <v-list-item-title v-else> (id: {{ t.id }}) </v-list-item-title>
+          <v-list-item-subtitle>
+            {{ t.weekday }}, {{ t.dateFrom }} - {{ t.dateTo }}
+            <v-chip small>{{ t.section }}</v-chip>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
   </div>
 </template>
 
@@ -35,7 +37,6 @@ import Component from 'vue-class-component'
 
 import moment from 'moment'
 import { administraStore } from '~/store'
-// import { Pool } from '~/types/models'
 
 Vue.filter('formatDate', function (value: FirebaseFirestore.Timestamp) {
   if (typeof value.toDate === 'function') {
@@ -50,7 +51,7 @@ Vue.filter('formatDate', function (value: FirebaseFirestore.Timestamp) {
     await administraStore.init()
   },
 })
-export default class CategoriesPage extends Vue {
+export default class extends Vue {
   async mounted() {
     // client side
     await administraStore.init()
@@ -60,6 +61,7 @@ export default class CategoriesPage extends Vue {
     { text: 'Title', value: 'title' },
     { text: 'Start', value: 'dateFrom' },
     { text: 'End', value: 'dateTo' },
+    { text: 'Weekday', value: 'weekday' },
     { text: 'Section', value: 'section' },
   ]
 
