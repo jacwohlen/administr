@@ -77,7 +77,8 @@ npm run test -- --silent=false --runInBand --forceExit
 We use firebase hosting api and function api to deploy the website.
 
 1. Install `npm install -g firebase-tools`
-2. Setup environment variables for the function
+2. Install node_modules for functions `cd functions` and `npm install`
+3. Setup environment variables for the function
 
 Add the environment variable (without `export` to `functions/.env`
 
@@ -91,9 +92,9 @@ APP_FIREBASE_MESSAGING_SENDER_ID=
 APP_FIREBASE_APP_ID=
 ```
 
-3. Run `firebase deploy --only functions,hosting`
+4. Run `firebase deploy --only functions,hosting`
 
-** Attention: ** Make sure new npm dependencies are added to `package.json` and also to `functions/package.json`
+**Attention:** Make sure new npm dependencies are added to `package.json` and also to `functions/package.json`
 
 Reference: https://medium.com/@sirofjelly/deploying-a-nuxt-ssr-server-side-rendering-app-to-google-firebase-5d90117167db
 
