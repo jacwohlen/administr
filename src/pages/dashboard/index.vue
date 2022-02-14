@@ -31,6 +31,7 @@
           <v-btn
             color="primary"
             text
+            icon
             :to="'dashboard/' + t.id + '/' + todayStr"
           >
             <v-icon left> mdi-format-list-checks </v-icon>
