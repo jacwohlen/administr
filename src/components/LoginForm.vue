@@ -1,5 +1,5 @@
 <template>
-  <v-card class="elevation-12" width="50%">
+  <v-card class="elevation-6" max-width="500px">
     <v-toolbar dark color="primary">
       <v-toolbar-title>Login</v-toolbar-title>
     </v-toolbar>
