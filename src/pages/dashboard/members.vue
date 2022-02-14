@@ -1,18 +1,14 @@
 <template>
   <div>
-    <v-row>
-      <v-col>
-        <v-card>
-          <v-card-title>Members</v-card-title>
-          <v-data-table
-            :headers="headers"
-            :items="getMembers()"
-            item-key="firstname"
-          >
-          </v-data-table>
-        </v-card>
-      </v-col>
-    </v-row>
+    <h1 align="center" class="text-h5">Members</h1>
+    <v-data-table
+      :headers="headers"
+      :items="members()"
+      item-key="id"
+      hide-default-footer
+      mobile-breakpoint="0"
+    >
+    </v-data-table>
   </div>
 </template>
 
@@ -21,7 +17,6 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 import { administraStore } from '~/store'
-// import { Pool } from '~/types/models'
 
 @Component({
   layout: 'DashboardLayout',
@@ -41,7 +36,7 @@ export default class CategoriesPage extends Vue {
     { text: 'Lastname', value: 'lastname' },
   ]
 
-  getMembers() {
+  members() {
     return administraStore.members
   }
 }
