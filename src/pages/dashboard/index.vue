@@ -5,13 +5,13 @@
     <v-row class="pt-1">
       <v-col align="right">
         <v-btn text @click="goYesterday">
-          <v-icon>mdi-arrow-left</v-icon> Yesterday
+          <v-icon>mdi-arrow-left</v-icon> Back
         </v-btn>
       </v-col>
       <v-spacer></v-spacer>
       <v-col align="left">
         <v-btn text @click="goTomorrow">
-          Tomorrow
+          Next
           <v-icon>mdi-arrow-right</v-icon>
         </v-btn>
       </v-col>
@@ -78,7 +78,7 @@ export default class extends Vue {
 
   get title(): string {
     const d = moment(this.date)
-    return d.calendar()
+    return d.format('LL')
   }
 
   get todayStr(): string {

@@ -58,17 +58,23 @@ export default class Administra extends VuexModule {
   @Action({ rawError: true })
   async addParticipant({
     trainingId,
+    memberId,
     lastname,
     firstname,
   }: {
     trainingId: string
+    memberId: string
     lastname: string
     firstname: string
   }) {
-    const ref = firebase.firestore().collection('members').doc()
-    const memberId = ref.id
+    let ref = null
+    if (memberId === '') {
+      ref = firebase.firestore().collection('members').doc()
+    } else {
+      ref = firebase.firestore().collection('members').doc(memberId)
+    }
 
-    await this.addMember({ id: memberId, lastname, firstname })
+    await this.addMember({ id: ref.id, lastname, firstname })
 
     // ensure the training exists
     const t = await firebase
@@ -90,10 +96,7 @@ export default class Administra extends VuexModule {
         .collection('trainings')
         .doc(trainingId)
         .set({
-          participants: firebase.firestore.FieldValue.arrayUnion({
-            lastname,
-            firstname,
-          }),
+          participants: firebase.firestore.FieldValue.arrayUnion(ref),
         })
     }
   }
