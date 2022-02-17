@@ -96,13 +96,6 @@ const PrefilledProps = Vue.extend({
 })
 @Component({
   layout: 'DashboardLayout',
-  async fetch() {
-    await administraStore.init()
-    await administraStore.initTraining({
-      // @ts-ignore
-      trainingId: this.trainingId,
-    })
-  },
 })
 export default class extends PrefilledProps {
   title: string = ''

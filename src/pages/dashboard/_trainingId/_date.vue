@@ -34,9 +34,19 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import moment from 'moment'
 
+import { administraStore } from '~/store'
+
 @Component({
   layout: 'DashboardLayout',
-  asyncData({ params }) {
+  async asyncData({ params }) {
+    await administraStore.init()
+    await administraStore.initTraining({
+      trainingId: params.trainingId,
+    })
+    await administraStore.initPresentList({
+      trainingId: params.trainingId,
+      date: params.date,
+    })
     return { date: params.date, trainingId: params.trainingId }
   },
 })

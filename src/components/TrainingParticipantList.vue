@@ -38,19 +38,6 @@ const PrefilledProps = Vue.extend({
 })
 @Component({
   layout: 'DashboardLayout',
-  async fetch() {
-    await administraStore.init()
-    await administraStore.initTraining({
-      // @ts-ignore
-      trainingId: this.trainingId,
-    })
-    await administraStore.initPresentList({
-      // @ts-ignore
-      trainingId: this.trainingId,
-      // @ts-ignore
-      date: this.date,
-    })
-  },
 })
 export default class extends PrefilledProps {
   get selected(): string[] {
