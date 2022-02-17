@@ -1,5 +1,7 @@
 export default {
   srcDir: 'src/',
+  target: 'static',
+  ssr: false,
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
