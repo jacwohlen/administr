@@ -127,8 +127,9 @@ export default class Administra extends VuexModule {
   }
 
   @Action({ rawError: true })
-  init() {
-    const action = firestoreAction(({ bindFirestoreRef }) => {
+  async init() {
+    console.log('init()')
+    const action = (await firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
           'trainings',
@@ -140,13 +141,13 @@ export default class Administra extends VuexModule {
           { wait: true }
         ),
       ])
-    }) as Function
-    return action(this.context)
+    })) as Function
+    return await action(this.context)
   }
 
   @Action({ rawError: true })
-  initTraining({ trainingId }: { trainingId: string }) {
-    const action = firestoreAction(({ bindFirestoreRef }) => {
+  async initTraining({ trainingId }: { trainingId: string }) {
+    const action = (await firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
           'training',
@@ -154,14 +155,21 @@ export default class Administra extends VuexModule {
           { wait: true }
         ),
       ])
-    }) as Function
-    return action(this.context)
+    })) as Function
+    return await action(this.context)
   }
 
   @Action({ rawError: true })
-  initPresentList({ trainingId, date }: { trainingId: string; date: string }) {
+  async initPresentList({
+    trainingId,
+    date,
+  }: {
+    trainingId: string
+    date: string
+  }) {
+    console.log('initPresentList: ', trainingId, date)
     if (!date) return
-    const action = firestoreAction(({ bindFirestoreRef }) => {
+    const action = (await firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
           'confirmedParticipants',
@@ -174,13 +182,13 @@ export default class Administra extends VuexModule {
           { wait: true }
         ),
       ])
-    }) as Function
-    return action(this.context)
+    })) as Function
+    return await action(this.context)
   }
 
   @Action({ rawError: true })
-  initTrainingByWeekday(weekday: string) {
-    const action = firestoreAction(({ bindFirestoreRef }) => {
+  async initTrainingByWeekday(weekday: string) {
+    const action = (await firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
           'trainingsByWeekday',
@@ -191,7 +199,7 @@ export default class Administra extends VuexModule {
           { wait: true }
         ),
       ])
-    }) as Function
-    return action(this.context)
+    })) as Function
+    return await action(this.context)
   }
 }
