@@ -101,3 +101,4 @@ Reference: https://medium.com/@sirofjelly/deploying-a-nuxt-ssr-server-side-rende
 ## Tips
 
 - Tip use `nvm install --lts` to install long term support version of `node`.
+- Nuxt Fetch vs AsyncData vs Hooks https://medium.com/js-dojo/universal-data-fetching-in-nuxt-js-13ad9933524c

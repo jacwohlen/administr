@@ -91,7 +91,12 @@ const PrefilledProps = Vue.extend({
     },
   },
 })
-@Component
+@Component({
+  layout: 'DashboardLayout',
+  async fetch() {
+    await administraStore.init()
+  },
+})
 export default class extends PrefilledProps {
   name: string | Member = ''
 

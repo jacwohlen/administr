@@ -65,6 +65,7 @@ import { administraStore } from '~/store'
 @Component({
   layout: 'DashboardLayout',
   async fetch() {
+    console.log('ASYNC FETCH')
     // @ts-ignore
     await administraStore.initTrainingByWeekday(this.weekday)
   },
@@ -96,6 +97,7 @@ export default class extends Vue {
   goTomorrow() {
     const d = moment(this.date)
     this.date = d.add(1, 'days')
+    // TODO: might not be needed if we do a page navigation
     this.$fetch()
   }
 

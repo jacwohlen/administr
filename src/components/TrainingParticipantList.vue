@@ -36,24 +36,23 @@ const PrefilledProps = Vue.extend({
     },
   },
 })
-@Component
-export default class extends PrefilledProps {
-  async mounted() {
-    this.$nextTick(() => {
-      this.$nuxt.$loading.start()
-      setTimeout(() => this.$nuxt.$loading.finish(), 500)
-    })
+@Component({
+  layout: 'DashboardLayout',
+  async fetch() {
     await administraStore.init()
     await administraStore.initTraining({
+      // @ts-ignore
       trainingId: this.trainingId,
     })
     await administraStore.initPresentList({
+      // @ts-ignore
       trainingId: this.trainingId,
+      // @ts-ignore
       date: this.date,
     })
-    this.$nuxt.$loading.finish()
-  }
-
+  },
+})
+export default class extends PrefilledProps {
   get selected(): string[] {
     if (!administraStore.confirmedParticipants) return []
     return administraStore.confirmedParticipants.members.map((i) => i.id)
