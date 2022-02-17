@@ -5,6 +5,15 @@ import firebase from 'firebase/compat/app'
 
 import { Training, Member } from '~/types/models'
 
+// Make sure id is not an hidden field
+// When SSR is copying the state from server to client the non emurated 
+// field id (default of vuexfire) gets removed, leading to mismatch of 
+// state on server vs client
+const serializer = (snap: firebase.firestore.DocumentSnapshot) => ({
+  ...snap.data(),
+  id: snap.id,
+})
+
 @Module({
   name: 'administra',
   stateFactory: true,
@@ -133,12 +142,13 @@ export default class Administra extends VuexModule {
       return Promise.all([
         bindFirestoreRef(
           'trainings',
-          firebase.firestore().collection('trainings')
+          firebase.firestore().collection('trainings'),
+          { wait: true, serialize: serializer }
         ),
         bindFirestoreRef(
           'members',
           firebase.firestore().collection('members'),
-          { wait: true }
+          { wait: true, serialize: serializer }
         ),
       ])
     })) as Function
@@ -152,7 +162,7 @@ export default class Administra extends VuexModule {
         bindFirestoreRef(
           'training',
           firebase.firestore().collection('trainings').doc(trainingId),
-          { wait: true }
+          { wait: true, serialize: serializer }
         ),
       ])
     })) as Function
@@ -179,7 +189,7 @@ export default class Administra extends VuexModule {
             .doc(trainingId)
             .collection('log')
             .doc(date),
-          { wait: true }
+          { wait: true, serialize: serializer }
         ),
       ])
     })) as Function
@@ -196,7 +206,7 @@ export default class Administra extends VuexModule {
             .firestore()
             .collection('trainings')
             .where('weekday', '==', weekday),
-          { wait: true }
+          { wait: true, serialize: serializer }
         ),
       ])
     })) as Function
