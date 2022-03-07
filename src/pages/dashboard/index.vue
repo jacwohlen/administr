@@ -24,7 +24,7 @@
         v-for="(t, idx) in trainings"
         v-else
         :key="idx"
-        :to="'dashboard/' + t.id + '/' + todayStr"
+        :to="'/dashboard/' + t.id + '/' + todayStr"
         class="mb-3"
       >
         <v-list-item-content>
@@ -65,7 +65,6 @@ import { administraStore } from '~/store'
 @Component({
   layout: 'DashboardLayout',
   async fetch() {
-    console.log('ASYNC FETCH')
     // @ts-ignore
     await administraStore.initTrainingByWeekday(this.weekday)
   },
