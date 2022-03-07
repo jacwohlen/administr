@@ -7,6 +7,7 @@
       item-key="id"
       hide-default-footer
       mobile-breakpoint="0"
+      disable-pagination
     >
     </v-data-table>
   </div>
