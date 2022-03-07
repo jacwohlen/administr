@@ -6,7 +6,6 @@
         :items="members"
         :search-input.sync="search"
         :filter="filter"
-        item-text="firstname"
         cache-items
         hide-details
         flat
@@ -17,6 +16,10 @@
         append-icon="mdi-account-plus-outline"
         @input="addParticipant"
       >
+        <template slot="selection" slot-scope="data">
+          {{ data.item.lastname }}
+          {{ data.item.firstname }}
+        </template>
         <template #item="data">
           <v-list-item-content>
             {{ data.item.lastname }}
@@ -109,11 +112,9 @@ export default class extends PrefilledProps {
   }
 
   filter(item: any, queryText: string) {
-    queryText = queryText.toLowerCase()
-    return (
-      item.firstname.toLowerCase().includes(queryText) ||
-      item.lastname.toLowerCase().includes(queryText)
-    )
+    queryText = queryText.toLowerCase().trim()
+    const name = item.lastname + ' ' + item.firstname
+    return name.toLowerCase().includes(queryText)
   }
 
   showDialog() {
