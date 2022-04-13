@@ -1,10 +1,10 @@
 <template>
   <div>
-    <v-list-item-group v-model="selected" multiple active-class="">
+    <v-list>
       <v-list-item v-for="m in participants" :key="m.id" :value="m.id">
         <template #default="{ active }">
           <v-list-item-action>
-            <v-checkbox v-if="date" :input-value="active" color="primary">
+            <v-checkbox v-if="date" v-model="selected" :value="m.id" color="primary">
             </v-checkbox>
             <v-icon v-else>mdi-account-outline</v-icon>
           </v-list-item-action>
@@ -13,7 +13,7 @@
           </v-list-item-content>
         </template>
       </v-list-item>
-    </v-list-item-group>
+    </v-list>
   </div>
 </template>
 
