@@ -132,7 +132,7 @@ export default class Administra extends VuexModule {
       .firestore()
       .collection('trainings')
       .doc(training.id)
-      .update(training)
+      .set(training)
   }
 
   @Action({ rawError: true })
