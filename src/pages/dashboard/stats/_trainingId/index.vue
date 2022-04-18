@@ -1,13 +1,23 @@
 <template>
   <div>
-    <h1>{{ training.name }}</h1>
+    <h1>
+      {{ training.name }}
+      (<small>{{ training.id }}</small>)
+    </h1>
     <v-data-table
       :items="dates"
-      :headers="items"
+      :headers="members"
+      items-per-page="-1"
       disable-sort
       hide-default-footer
       dense
+      item-class="nowrap"
     >
+      <template v-slot:item.date="{ item }">
+        <tr>
+          <td style="white-space: nowrap">{{ item.date }}</td>
+        </tr>
+      </template>
     </v-data-table>
 
     <h2>Table 2</h2>
@@ -29,6 +39,8 @@ import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
 import moment from 'moment'
 
+import { Member } from '~/types/models'
+
 import { administraStore } from '~/store'
 
 @Component({
@@ -45,26 +57,47 @@ import { administraStore } from '~/store'
   },
 })
 export default class extends Vue {
-  dates: {}[] = []
   date: moment.Moment | null = null
+  dates: {}[] = []
+  members: any = []
+
   get training() {
-    return administraStore.trainingLog
+    return administraStore.training
+  }
+
+  get trainingLogs() {
+    return administraStore.trainingLogs
   }
 
   mounted() {
-    this.date = moment().year(2022).month(0).date(1).day(8).isoWeekday(1)
-    if (this.date.date() > 7) {
-      this.date = this.date.isoWeekday(-6)
-    }
-    this.dates.push({ text: 'Name', value: 'name' })
-    while (this.dates.length < 52) {
-      this.dates.push({
-        text: moment(this.date).week(), // format('DD.MM.YYYY'),
-        value: moment(this.date).format('YYYY-MM-DD'),
-        class: 'rotate',
+    this.dates = this.getAllTrainingDays()
+    const memb = []
+    memb.push({ text: 'Dates', value: 'date' })
+    this.trainingLogs.forEach((l) => {
+      l.members.forEach((m: Member) => {
+        if (!memb.find((a) => a.value.id === m.id)) {
+          memb.push({ text: m.lastname + ' ' + m.firstname, value: m })
+        }
       })
-      this.date = this.date.add(7, 'days')
+    })
+    this.members = memb
+  }
+
+  getAllTrainingDays() {
+    let date = moment().year(2022).month(0).date(1).day(8).isoWeekday(1)
+    const dates = []
+    if (date.date() > 7) {
+      date = date.isoWeekday(-6)
     }
+    while (dates.length < 52) {
+      dates.push({
+        X: moment(date).format('DD.MM.YYYY'),
+        date: moment(date).format('YYYY-MM-DD'),
+        // TODO: dates mit trainingslog ergzenzen...
+      })
+      date = date.add(7, 'days')
+    }
+    return dates
   }
 
   get items() {
@@ -86,26 +119,6 @@ export default class extends Vue {
         '2022-01-03': 'X',
         '2022-01-07': 'X',
         '2022-03-21': 'X',
-      },
-    ]
-  }
-
-  get members() {
-    return [
-      {
-        id: '1',
-        lastname: 'Penelope',
-        firstname: 'Penelope',
-      },
-      {
-        id: '2',
-        lastname: 'Franz',
-        firstname: 'Penelope',
-      },
-      {
-        id: '3',
-        lastname: 'Enis',
-        firstname: 'Penelope',
       },
     ]
   }

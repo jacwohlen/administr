@@ -28,7 +28,7 @@ export default class Administra extends VuexModule {
 
   trainingsByWeekday: Training[] = []
 
-  trainingLog: TrainingLog[] = []
+  trainingLogs: TrainingLog[] = []
 
   get getTrainingsByWeekday() {
     return async (weekday: string) => {
@@ -222,7 +222,7 @@ export default class Administra extends VuexModule {
     const action = (await firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
-          'trainingLog',
+          'trainingLogs',
           firebase.firestore().collection('trainings').doc(trainingId).collection('log'),
           { wait: true, serialize: serializer }
         ),
@@ -231,4 +231,3 @@ export default class Administra extends VuexModule {
     return await action(this.context)
   }
 }
-
