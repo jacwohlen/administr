@@ -140,7 +140,6 @@ export default class Administra extends VuexModule {
 
   @Action({ rawError: true })
   async init() {
-    console.log('init()')
     const action = (await firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
@@ -180,7 +179,6 @@ export default class Administra extends VuexModule {
     trainingId: string
     date: string
   }) {
-    console.log('initPresentList: ', trainingId, date)
     if (!date) return
     const action = (await firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
