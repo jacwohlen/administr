@@ -6,8 +6,8 @@ import firebase from 'firebase/compat/app'
 import { Training, Member } from '~/types/models'
 
 // Make sure id is not an hidden field
-// When SSR is copying the state from server to client the non emurated 
-// field id (default of vuexfire) gets removed, leading to mismatch of 
+// When SSR is copying the state from server to client the non emurated
+// field id (default of vuexfire) gets removed, leading to mismatch of
 // state on server vs client
 const serializer = (snap: firebase.firestore.DocumentSnapshot) => ({
   ...snap.data(),
@@ -127,12 +127,15 @@ export default class Administra extends VuexModule {
   }
 
   @Action({ rawError: true })
+  async addImgToMember({ memberId, img }: { memberId: string; img: null | string }) {
+    await firebase.firestore().collection('members').doc(memberId).update({
+      img,
+    })
+  }
+
+  @Action({ rawError: true })
   createTraining(training: Training) {
-    firebase
-      .firestore()
-      .collection('trainings')
-      .doc(training.id)
-      .set(training)
+    firebase.firestore().collection('trainings').doc(training.id).set(training)
   }
 
   @Action({ rawError: true })

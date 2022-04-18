@@ -88,6 +88,7 @@ export default {
         },
       },
     ],
+    ['vue-web-cam/nuxt'],
   ],
 
   router: {
