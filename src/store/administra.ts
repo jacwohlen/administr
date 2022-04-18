@@ -3,7 +3,7 @@ import { firestoreAction } from 'vuexfire'
 
 import firebase from 'firebase/compat/app'
 
-import { Training, Member } from '~/types/models'
+import { Training, Member, TrainingLog } from '~/types/models'
 
 // Make sure id is not an hidden field
 // When SSR is copying the state from server to client the non emurated
@@ -27,6 +27,8 @@ export default class Administra extends VuexModule {
   confirmedParticipants: { members: Member[] } | null = null
 
   trainingsByWeekday: Training[] = []
+
+  trainingLog: TrainingLog[] = []
 
   get getTrainingsByWeekday() {
     return async (weekday: string) => {
@@ -213,4 +215,20 @@ export default class Administra extends VuexModule {
     })) as Function
     return await action(this.context)
   }
+
+
+  @Action({ rawError: true })
+  async initStats({ trainingId }: { trainingId: string }) {
+    const action = (await firestoreAction(({ bindFirestoreRef }) => {
+      return Promise.all([
+        bindFirestoreRef(
+          'trainingLog',
+          firebase.firestore().collection('trainings').doc(trainingId).collection('log'),
+          { wait: true, serialize: serializer }
+        ),
+      ])
+    })) as Function
+    return await action(this.context)
+  }
 }
+

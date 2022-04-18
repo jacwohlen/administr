@@ -13,3 +13,8 @@ export interface Training {
   section: string
   participants: Member[]
 }
+
+export interface TrainingLog {
+  id: string
+  member: Member[]
+}
