@@ -6,53 +6,53 @@
     </v-list-item-avatar>
     <v-dialog v-model="dialog.show" persistent>
       <v-card>
-        <v-card-title> Photo </v-card-title>
-        <v-row>
+        <v-card-title> Photo {{ firstname }} {{ lastname }} </v-card-title>
+        <v-row no-gutters>
           <v-col v-show="img">
-            <v-row justify="center">
+            <v-row no-gutters justify="center">
               <v-col align="center">
-                <img :src="img" />
+                <img :src="img" style="max-width: 100%; max-height: 100%" />
               </v-col>
             </v-row>
-            <v-row justify="center">
-              <v-col cols="4">
+            <v-row no-gutters justify="center">
+              <v-col align="center">
                 <v-btn class="primary" @click="onStart">
-                  <v-icon>mdi-camera-retake-outline</v-icon>
+                  <v-icon left>mdi-camera-retake-outline</v-icon>
                   Take new photo
                 </v-btn>
               </v-col>
-              <v-col cols="4">
+              <v-col align="center">
                 <v-btn @click="removePhoto"> Remove Photo </v-btn>
               </v-col>
             </v-row>
           </v-col>
           <v-col v-show="!img">
-            <v-row>
+            <v-row no-gutters>
               <v-col>
                 <vue-web-cam
                   ref="webcam"
                   :device-id="deviceId"
-                  width="100%"
+                  style="max-width: 100%; max-height: 100%"
                   @error="onError"
                   @cameras="onCameras"
                   @camera-change="onCameraChange"
                 />
               </v-col>
             </v-row>
-            <v-row justify="center">
-              <v-col cols="4">
+            <v-row no-gutters justify="center">
+              <v-col cols="12">
                 <v-select
                   v-model="camera"
                   :items="devices"
+                  class="px-6"
                   item-value="deviceId"
                   item-text="label"
                   prepend-icon="mdi-camera"
-                  return-object
                   dense
                 >
                 </v-select>
               </v-col>
-              <v-col cols="4">
+              <v-col align="center" cols="12">
                 <v-btn class="primary" @click="onCapture">
                   Capture Photo
                 </v-btn>
