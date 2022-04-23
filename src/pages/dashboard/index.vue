@@ -9,26 +9,68 @@
         </v-btn>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col align="center" :class="{ primary: isActive('Monday') }">
-        MO
+      <v-col align="center">
+        <v-btn
+          text
+          :class="{ primary: isActive(Weekday.Sunday) }"
+          @click="go(Weekday.Sunday)"
+        >
+          SO
+        </v-btn>
       </v-col>
-      <v-col align="center" :class="{ primary: isActive('Tuesday') }">
-        TU
+      <v-col align="center">
+        <v-btn
+          text
+          :class="{ primary: isActive(Weekday.Monday) }"
+          @click="go(Weekday.Monday)"
+        >
+          MO
+        </v-btn>
       </v-col>
-      <v-col align="center" :class="{ primary: isActive('Wednesday') }">
-        WE
+      <v-col align="center">
+        <v-btn
+          text
+          :class="{ primary: isActive(Weekday.Tuesday) }"
+          @click="go(Weekday.Tuesday)"
+        >
+          TU
+        </v-btn>
       </v-col>
-      <v-col align="center" :class="{ primary: isActive('Thursday') }">
-        TH
+      <v-col align="center">
+        <v-btn
+          text
+          :class="{ primary: isActive(Weekday.Wednesday) }"
+          @click="go(Weekday.Wednesday)"
+        >
+          WE
+        </v-btn>
       </v-col>
-      <v-col align="center" :class="{ primary: isActive('Friday') }">
-        FR
+      <v-col align="center">
+        <v-btn
+          text
+          :class="{ primary: isActive(Weekday.Thursday) }"
+          @click="go(Weekday.Thursday)"
+        >
+          TH
+        </v-btn>
       </v-col>
-      <v-col align="center" :class="{ primary: isActive('Saturday') }">
-        SA
+      <v-col align="center">
+        <v-btn
+          text
+          :class="{ primary: isActive(Weekday.Friday) }"
+          @click="go(Weekday.Friday)"
+        >
+          FR
+        </v-btn>
       </v-col>
-      <v-col align="center" :class="{ primary: isActive('Sunday') }">
-        SO
+      <v-col align="center">
+        <v-btn
+          text
+          :class="{ primary: isActive(Weekday.Saturday) }"
+          @click="go(Weekday.Saturday)"
+        >
+          SA
+        </v-btn>
       </v-col>
       <v-spacer></v-spacer>
       <v-col align="left">
@@ -84,6 +126,16 @@ import moment from 'moment'
 import { Training } from '~/types/models'
 import { administraStore } from '~/store'
 
+enum Weekday {
+  Sunday = 0,
+  Monday = 1,
+  Tuesday = 2,
+  Wednesday = 3,
+  Thursday = 4,
+  Friday = 5,
+  Saturday = 6,
+}
+
 @Component({
   layout: 'DashboardLayout',
   async fetch() {
@@ -92,14 +144,15 @@ import { administraStore } from '~/store'
   },
 })
 export default class extends Vue {
+  Weekday: any = Weekday
   date = moment()
 
   get trainings(): Training[] {
     return administraStore.trainingsByWeekday
   }
 
-  isActive(weekday: string) {
-    return weekday === this.date.format('dddd')
+  isActive(weekday: Weekday) {
+    return weekday === this.date.day()
   }
 
   get title(): string {
@@ -134,6 +187,13 @@ export default class extends Vue {
 
   goToday() {
     this.date = moment()
+    this.$fetch()
+  }
+
+  go(weekday: Weekday) {
+    const dayToday = this.date.day()
+    const d = moment(this.date)
+    this.date = d.add(weekday - dayToday, 'days')
     this.$fetch()
   }
 }
