@@ -176,6 +176,7 @@ export default class extends Vue {
 
   cancel() {
     this.img = this.image
+    this.onStop()
     this.dialog.show = false
   }
 
