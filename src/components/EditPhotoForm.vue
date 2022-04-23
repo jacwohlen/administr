@@ -2,7 +2,9 @@
   <div>
     <v-list-item-avatar color="secondary" class="mr-3">
       <v-img v-if="img" :src="img" @click="edit" />
-      <span v-else @click="edit">{{ userinitials }}</span>
+      <span v-else align="center" style="width:100%" @click="edit">{{
+        userinitials
+      }}</span>
     </v-list-item-avatar>
     <v-dialog v-model="dialog.show" persistent>
       <v-card>
