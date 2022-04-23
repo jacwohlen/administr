@@ -2,11 +2,33 @@
   <div>
     <!-- <h1 align="center" class="text-h5" @click="goToday">{{ title }}</h1> -->
     <h1 align="center" class="text-h5" @click="goToday">{{ title }}</h1>
-    <v-row class="pt-1">
+    <v-row class="pt-1" align="center" justify="center" no-gutters>
       <v-col align="right">
         <v-btn text @click="goYesterday">
           <v-icon>mdi-arrow-left</v-icon> Back
         </v-btn>
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col align="center" :class="{ primary: isActive('Monday') }">
+        MO
+      </v-col>
+      <v-col align="center" :class="{ primary: isActive('Tuesday') }">
+        TU
+      </v-col>
+      <v-col align="center" :class="{ primary: isActive('Wednesday') }">
+        WE
+      </v-col>
+      <v-col align="center" :class="{ primary: isActive('Thursday') }">
+        TH
+      </v-col>
+      <v-col align="center" :class="{ primary: isActive('Friday') }">
+        FR
+      </v-col>
+      <v-col align="center" :class="{ primary: isActive('Saturday') }">
+        SA
+      </v-col>
+      <v-col align="center" :class="{ primary: isActive('Sunday') }">
+        SO
       </v-col>
       <v-spacer></v-spacer>
       <v-col align="left">
@@ -74,6 +96,10 @@ export default class extends Vue {
 
   get trainings(): Training[] {
     return administraStore.trainingsByWeekday
+  }
+
+  isActive(weekday: string) {
+    return weekday === this.date.format('dddd')
   }
 
   get title(): string {
