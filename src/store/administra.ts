@@ -28,6 +28,8 @@ export default class Administra extends VuexModule {
 
   trainingsByWeekday: Training[] = []
 
+  member: Member | null = null
+
   get getTrainingsByWeekday() {
     return async (weekday: string) => {
       const querySnapshot = await firebase
@@ -127,7 +129,13 @@ export default class Administra extends VuexModule {
   }
 
   @Action({ rawError: true })
-  async addImgToMember({ memberId, img }: { memberId: string; img: null | string }) {
+  async addImgToMember({
+    memberId,
+    img,
+  }: {
+    memberId: string
+    img: null | string
+  }) {
     await firebase.firestore().collection('members').doc(memberId).update({
       img,
     })
@@ -164,6 +172,20 @@ export default class Administra extends VuexModule {
         bindFirestoreRef(
           'training',
           firebase.firestore().collection('trainings').doc(trainingId),
+          { wait: true, serialize: serializer }
+        ),
+      ])
+    })) as Function
+    return await action(this.context)
+  }
+
+  @Action({ rawError: true })
+  async initMember({ memberId }: { memberId: string }) {
+    const action = (await firestoreAction(({ bindFirestoreRef }) => {
+      return Promise.all([
+        bindFirestoreRef(
+          'member',
+          firebase.firestore().collection('members').doc(memberId),
           { wait: true, serialize: serializer }
         ),
       ])

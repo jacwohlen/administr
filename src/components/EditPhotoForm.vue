@@ -1,11 +1,9 @@
 <template>
   <div>
-    <v-list-item-avatar color="secondary" class="mr-3">
-      <v-img v-if="img" :src="img" @click="edit" />
-      <span v-else align="center" style="width:100%" @click="edit">{{
-        userinitials
-      }}</span>
-    </v-list-item-avatar>
+    <v-img v-if="img" :src="img" @click="edit" />
+    <span v-else align="center" style="width: 100%" @click="edit">{{
+      userinitials
+    }}</span>
     <v-dialog v-model="dialog.show" persistent>
       <v-card>
         <v-card-title> Photo {{ firstname }} {{ lastname }} </v-card-title>

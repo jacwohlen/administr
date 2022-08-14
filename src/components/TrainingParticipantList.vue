@@ -13,12 +13,12 @@
             </v-checkbox>
             <v-icon v-else>mdi-account-outline</v-icon>
           </v-list-item-action>
-          <edit-photo-form
-            :memberId="m.id"
-            :lastname="m.lastname"
-            :firstname="m.firstname"
-            :image="m.img"
-          />
+          <v-list-item-avatar color="secondary" class="mr-3">
+            <v-img v-if="m.img" :src="m.img" />
+            <span v-else align="center" style="width: 100%">{{
+              userinitials(m.lastname, m.firstname)
+            }}</span>
+          </v-list-item-avatar>
           <v-list-item-content>
             {{ m.lastname }} {{ m.firstname }}
           </v-list-item-content>
@@ -30,7 +30,9 @@
                 </v-btn>
               </template>
               <v-list>
-                <edit-photo-form :memberId="m.id" />
+                <v-list-item :to="'/dashboard/member/' + m.id">
+                  <v-list-item-title>View</v-list-item-title>
+                </v-list-item>
                 <v-list-item @click="() => {}">
                   <v-list-item-title>Remove</v-list-item-title>
                 </v-list-item>
@@ -77,6 +79,10 @@ export default class extends PrefilledProps {
     if (!administraStore.training) return
     if (!administraStore.training.participants) return
     return administraStore.training.participants
+  }
+
+  userinitials(firstname, lastname) {
+    return firstname[0] + lastname[0]
   }
 
   check(participantsIds: string[]) {
