@@ -10,9 +10,24 @@
       </v-col>
       <v-spacer></v-spacer>
       <v-col align="center" class="px-0">
-        <v-btn text class="px-0" color="primary" @click="today">
-          {{ title }}
-        </v-btn>
+        <v-menu
+          v-model="menu2"
+          :close-on-content-click="false"
+          offset-y
+          min-width="auto"
+        >
+          <template #activator="{ on, attrs }">
+            <v-btn text class="px-0" color="primary" v-bind="attrs" v-on="on">
+              {{ title }}
+            </v-btn>
+          </template>
+          <v-date-picker
+            v-model="date"
+            no-title
+            :allowed-dates="allowedDates"
+            @input="setDate"
+          ></v-date-picker>
+        </v-menu>
       </v-col>
       <v-spacer></v-spacer>
       <v-col align="left" class="mx-0 px-0">
@@ -68,11 +83,6 @@ export default class PresentListPage extends Vue {
     return this.dateM.format('dddd')
   }
 
-  today() {
-    const s = moment().format('yyyy-MM-DD')
-    this.$router.push(s)
-  }
-
   backWeek() {
     const s = this.dateM.subtract(7, 'days').format('yyyy-MM-DD')
     this.$router.push(s)
@@ -85,6 +95,26 @@ export default class PresentListPage extends Vue {
 
   back() {
     this.$router.back()
+  }
+
+  menu2 = false
+  setDate() {
+    this.$router.push(this.date)
+  }
+
+  // FIXME: Refactor
+  allowedDates(val: string) {
+    const weekday = administraStore.training!.weekday
+    let n
+    if (weekday === 'Sunday') n = 0
+    if (weekday === 'Monday') n = 1
+    if (weekday === 'Tuesday') n = 2
+    if (weekday === 'Wednesday') n = 3
+    if (weekday === 'Thursday') n = 4
+    if (weekday === 'Friday') n = 5
+    if (weekday === 'Saturday') n = 6
+
+    return new Date(val).getDay() === n
   }
 }
 </script>

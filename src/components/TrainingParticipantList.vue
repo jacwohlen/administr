@@ -81,7 +81,7 @@ export default class extends PrefilledProps {
     return administraStore.training.participants
   }
 
-  userinitials(firstname, lastname) {
+  userinitials(firstname: string, lastname: string) {
     return firstname[0] + lastname[0]
   }
 

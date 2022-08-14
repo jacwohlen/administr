@@ -10,9 +10,7 @@
       </v-col>
       <v-spacer></v-spacer>
       <v-col align="center">
-        <v-chip color="primary" label>
-          <b>{{ weekday }}</b>
-        </v-chip>
+        <b>{{ weekday }}</b>
       </v-col>
       <v-spacer></v-spacer>
       <v-col align="left">
