@@ -10,12 +10,7 @@
       </v-col>
       <v-spacer></v-spacer>
       <v-col align="center" class="px-0">
-        <v-menu
-          v-model="menu2"
-          :close-on-content-click="false"
-          offset-y
-          min-width="auto"
-        >
+        <v-dialog v-model="dialogDatePicker" width="unset">
           <template #activator="{ on, attrs }">
             <v-btn text class="px-0" color="primary" v-bind="attrs" v-on="on">
               {{ title }}
@@ -27,7 +22,7 @@
             :allowed-dates="allowedDates"
             @input="setDate"
           ></v-date-picker>
-        </v-menu>
+        </v-dialog>
       </v-col>
       <v-spacer></v-spacer>
       <v-col align="left" class="mx-0 px-0">
@@ -97,7 +92,7 @@ export default class PresentListPage extends Vue {
     this.$router.back()
   }
 
-  menu2 = false
+  dialogDatePicker = false
   setDate() {
     this.$router.push(this.date)
   }
