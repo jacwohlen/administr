@@ -35,11 +35,12 @@ def sync_members():
 
   for e in response.json():
     prop = e["properties"]
-    print(f"ID: {e['id']}, Name: {prop['Name']}, Vorname: {prop['Vorname']}, Geburtstag: {prop['Geburtstag']} ")
+    print(f"ID: {e['id']}, Name: {prop['Name']}, Vorname: {prop['Vorname']}, Geburtstag: {prop['Geburtstag']} Mobile: {prop['Mobile']} ")
     data = {
         u"firstname": prop["Vorname"],
         u"lastname": prop["Name"],
-        u"birthday": prop["Geburtstag"]
+        u"birthday": prop["Geburtstag"],
+        u"mobile": prop["Mobile"]
     }
     db.collection(u'members').document(str(e["id"])).set(data)
 
