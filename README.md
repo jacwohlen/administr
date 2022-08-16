@@ -37,6 +37,9 @@ export APP_FIREBASE_PROJECT_ID=
 export APP_FIREBASE_STORAGE_BUCKET=
 export APP_FIREBASE_MESSAGING_SENDER_ID=
 export APP_FIREBASE_APP_ID=
+
+# This requies firestore rules to be setup as well. Check example at end of README
+export APP_GOOGLE_LOGIN_DOMAIN=<your-google-domain-if-want-to-restrict>
 ```
 
 ```bash
@@ -74,29 +77,44 @@ npm run test -- --silent=false --runInBand --forceExit
 
 ## Deployment
 
-We use firebase hosting api and function api to deploy the website.
+We use netify to host the webapp.
 
-1. Install `npm install -g firebase-tools`
-2. Install node_modules for functions `cd functions` and `npm install`
-3. Setup environment variables for the function
+1. Run 'npm run generate' which generates the webapp into `dist`
+2. Netlify then hosts `dist`
 
-Add the environment variable (without `export` to `functions/.env`
+## Restricted Login (Google Authentication with specific Domain)
+
+This Webapp restricts login to Google Accounts with a given domain.
+To make this happen, Firebase Auth needs a configuration to allow Google Auth.
+Further the firestore database rules need to restrict reads and writes from
+authenticated users with matching domain.
+And lastly set the environment `APP_GOOGLE_LOGIN_DOMAIN` accordingly.
+
+Example Config (allow Google Accounts with domain `jacwohlen.ch`)
 
 ```
-APP_FIREBASE_API_KEY=
-APP_FIREBASE_AUTH_DOMAIN=
-APP_FIREBASE_DATABASE_URL=
-APP_FIREBASE_PROJECT_ID=
-APP_FIREBASE_STORAGE_BUCKET=
-APP_FIREBASE_MESSAGING_SENDER_ID=
-APP_FIREBASE_APP_ID=
+...
+export APP_GOOGLE_LOGIN_DOMAIN=jacwohlen.ch
 ```
 
-4. Run `firebase deploy --only functions,hosting`
+Firestore rules
 
-**Attention:** Make sure new npm dependencies are added to `package.json` and also to `functions/package.json`
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth != null
+      && validAccount(request.auth.token.email);
+    }
+  }
+}
 
-Reference: https://medium.com/@sirofjelly/deploying-a-nuxt-ssr-server-side-rendering-app-to-google-firebase-5d90117167db
+function validAccount(userEmail){
+	return userEmail.split('@')[1] == 'jacwohlen.ch'; # your domain
+}
+
+```
 
 ## Tips
 
