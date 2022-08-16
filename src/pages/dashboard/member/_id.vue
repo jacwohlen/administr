@@ -30,8 +30,12 @@
             <td>{{ member.firstname }}</td>
           </tr>
           <tr>
-            <td><b>Phone</b></td>
-            <td>{{ member.phone }}</td>
+            <td><b>Birthday</b></td>
+            <td>{{ member.birthday }}</td>
+          </tr>
+          <tr>
+            <td><b>Mobile</b></td>
+            <td>{{ member.mobile }}</td>
           </tr>
         </tbody>
       </template>
