@@ -57,6 +57,12 @@ export default {
       },
     ],
   ],
+
+  // Make env available to nuxt components
+  env: {
+    APP_GOOGLE_LOGIN_DOMAIN: process.env.APP_GOOGLE_LOGIN_DOMAIN,
+  },
+
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     [

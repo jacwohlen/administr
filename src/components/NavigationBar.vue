@@ -35,7 +35,7 @@
         <v-divider></v-divider>
         <v-list-item dense two-line>
           <v-list-item-avatar>
-            <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+            <v-icon> mdi-account-circle </v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>{{ user.email }}</v-list-item-title>
