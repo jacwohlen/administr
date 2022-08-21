@@ -13,7 +13,7 @@
         <v-dialog v-model="dialogDatePicker" width="unset">
           <template #activator="{ on, attrs }">
             <v-btn text class="px-0" color="primary" v-bind="attrs" v-on="on">
-              {{ title }}
+              {{ dateFormated() }}
             </v-btn>
           </template>
           <v-date-picker
@@ -53,10 +53,6 @@ import { administraStore } from '~/store'
     await administraStore.initTraining({
       trainingId: params.trainingId,
     })
-    await administraStore.initPresentList({
-      trainingId: params.trainingId,
-      date: params.date,
-    })
     return { date: params.date, trainingId: params.trainingId }
   },
 })
@@ -66,26 +62,33 @@ export default class PresentListPage extends Vue {
 
   dateM: moment.Moment = moment()
 
-  mounted() {
-    this.dateM = moment(this.date, 'yyyy-MM-DD')
+  async update() {
+    await administraStore.initPresentList({
+      trainingId: this.trainingId,
+      date: this.dateM.format('yyyy-MM-DD'),
+    })
+    this.date = this.dateM.format('yyy-MM-DD')
   }
 
-  get title() {
+  dateFormated() {
     return this.dateM.format('L')
   }
 
-  get day() {
-    return this.dateM.format('dddd')
+  mounted() {
+    this.dateM = moment(this.date, 'yyyy-MM-DD')
+    this.update()
   }
 
   backWeek() {
-    const s = this.dateM.subtract(7, 'days').format('yyyy-MM-DD')
-    this.$router.push(s)
+    this.dateM.subtract(7, 'days')
+    history.pushState({}, '', this.dateM.format('yyyy-MM-DD'))
+    this.update()
   }
 
   forwardWeek() {
-    const s = this.dateM.add(7, 'days').format('yyyy-MM-DD')
-    this.$router.push(s)
+    this.dateM.add(7, 'days')
+    history.pushState({}, '', this.dateM.format('yyyy-MM-DD'))
+    this.update()
   }
 
   back() {
@@ -94,7 +97,10 @@ export default class PresentListPage extends Vue {
 
   dialogDatePicker = false
   setDate() {
-    this.$router.push(this.date)
+    this.dateM = moment(this.date, 'yyyy-MM-DD')
+    history.pushState({}, '', this.dateM.format('yyyy-MM-DD'))
+    this.update()
+    this.dialogDatePicker = false
   }
 
   // FIXME: Refactor
