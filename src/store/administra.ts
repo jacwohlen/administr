@@ -160,8 +160,28 @@ export default class Administra extends VuexModule {
   }
 
   @Action({ rawError: true })
-  createTraining(training: Training) {
-    firebase.firestore().collection('trainings').doc(training.id).set(training)
+  async createTraining(training: Training) {
+    const t = await firebase
+      .firestore()
+      .collection('trainings')
+      .doc(training.id)
+      .get()
+
+    if (t.exists) {
+      firebase.firestore().collection('trainings').doc(training.id).update({
+        title: training.title,
+        dateFrom: training.dateFrom,
+        dateTo: training.dateTo,
+        weekday: training.weekday,
+        section: training.section,
+      })
+    } else {
+      firebase
+        .firestore()
+        .collection('trainings')
+        .doc(training.id)
+        .set(training)
+    }
   }
 
   @Action({ rawError: true })

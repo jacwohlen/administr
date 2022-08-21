@@ -136,7 +136,7 @@ export default class extends PrefilledProps {
       dateTo: this.dialog.dateTo,
       section: this.dialog.section,
       weekday: this.dialog.weekday,
-      participants: [],
+      participants: [], // will be ignored
     })
     this.dialog.show = false
   }
