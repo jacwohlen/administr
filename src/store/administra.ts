@@ -113,6 +113,24 @@ export default class Administra extends VuexModule {
   }
 
   @Action({ rawError: true })
+  async removeParticipant({
+    trainingId,
+    memberId,
+  }: {
+    trainingId: string
+    memberId: string
+  }) {
+    let memberRef = firebase.firestore().collection('members').doc(memberId)
+    await firebase
+      .firestore()
+      .collection('trainings')
+      .doc(trainingId)
+      .update({
+        participants: firebase.firestore.FieldValue.arrayRemove(memberRef),
+      })
+  }
+
+  @Action({ rawError: true })
   async addMember({
     id,
     lastname,

@@ -33,7 +33,7 @@
                 <v-list-item :to="'/dashboard/member/' + m.id">
                   <v-list-item-title>View</v-list-item-title>
                 </v-list-item>
-                <v-list-item @click="() => {}">
+                <v-list-item @click="removeParticipant(m)">
                   <v-list-item-title>Remove</v-list-item-title>
                 </v-list-item>
               </v-list>
@@ -96,6 +96,13 @@ export default class extends PrefilledProps {
       participantsIds,
       tId: this.trainingId,
       date: this.date,
+    })
+  }
+
+  removeParticipant(m: Member) {
+    administraStore.removeParticipant({
+      trainingId: this.trainingId,
+      memberId: m.id,
     })
   }
 }
