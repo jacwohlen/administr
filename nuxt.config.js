@@ -1,7 +1,3 @@
-import PurgecssPlugin from 'purgecss-webpack-plugin'
-import glob from 'glob-all'
-import path from 'path'
-
 export default {
   srcDir: 'src/',
   target: 'static',
@@ -13,20 +9,6 @@ export default {
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     extractCSS: true,
-    extend(config, { isDev, isClient }) {
-      if (!isDev && isClient) {
-        config.plugins.push(
-          new PurgecssPlugin({
-            paths: glob.sync([
-              path.join(__dirname, './src/pages/**/*.vue'),
-              path.join(__dirname, './src/layouts/**/*.vue'),
-              path.join(__dirname, './src/components/**/*.vue'),
-            ]),
-            whitelist: ['html', 'body'],
-          })
-        )
-      }
-    },
   },
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
