@@ -53,6 +53,16 @@ import { Member } from 'types/models'
 
 import { administraStore } from '~/store'
 
+function arrayUnique(array: any[]) {
+  const a = array.concat()
+  for (let i = 0; i < a.length; ++i) {
+    for (let j = i + 1; j < a.length; ++j) {
+      if (a[i].id === a[j].id) a.splice(j--, 1)
+    }
+  }
+  return a
+}
+
 const PrefilledProps = Vue.extend({
   props: {
     trainingId: {
@@ -78,9 +88,18 @@ export default class extends PrefilledProps {
   }
 
   get participants() {
+    let confirmedParticipants: Member[] = []
+    if (administraStore.confirmedParticipants) {
+      confirmedParticipants = administraStore.confirmedParticipants.members
+    }
+
+    // union with
     if (!administraStore.training) return
     if (!administraStore.training.participants) return
-    return administraStore.training.participants
+
+    return arrayUnique(
+      confirmedParticipants.concat(administraStore.training.participants)
+    )
   }
 
   userinitials(m: Member) {

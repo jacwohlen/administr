@@ -48,12 +48,19 @@ import { administraStore } from '~/store'
 
 @Component({
   layout: 'DashboardLayout',
-  async asyncData({ params }) {
+  async fetch() {
+    const params = this.$route.params
+    if (!params.trainingId) {
+      return
+    }
     await administraStore.init()
     await administraStore.initTraining({
       trainingId: params.trainingId,
     })
-    return { date: params.date, trainingId: params.trainingId }
+    await administraStore.initPresentList({
+      trainingId: params.trainingId,
+      date: params.date,
+    })
   },
 })
 export default class PresentListPage extends Vue {
@@ -62,33 +69,28 @@ export default class PresentListPage extends Vue {
 
   dateM: moment.Moment = moment()
 
-  async update() {
-    await administraStore.initPresentList({
-      trainingId: this.trainingId,
-      date: this.dateM.format('yyyy-MM-DD'),
-    })
-    this.date = this.dateM.format('yyy-MM-DD')
-  }
-
   dateFormated() {
     return this.dateM.format('L')
   }
 
   mounted() {
+    this.trainingId = this.$route.params.trainingId
+    this.date = this.$route.params.date
     this.dateM = moment(this.date, 'yyyy-MM-DD')
-    this.update()
   }
 
   backWeek() {
     this.dateM.subtract(7, 'days')
-    history.pushState({}, '', this.dateM.format('yyyy-MM-DD'))
-    this.update()
+    this.$router.push({
+      path: this.dateM.format('yyyy-MM-DD'),
+    })
   }
 
   forwardWeek() {
     this.dateM.add(7, 'days')
-    history.pushState({}, '', this.dateM.format('yyyy-MM-DD'))
-    this.update()
+    this.$router.push({
+      path: this.dateM.format('yyyy-MM-DD'),
+    })
   }
 
   back() {
@@ -98,8 +100,9 @@ export default class PresentListPage extends Vue {
   dialogDatePicker = false
   setDate() {
     this.dateM = moment(this.date, 'yyyy-MM-DD')
-    history.pushState({}, '', this.dateM.format('yyyy-MM-DD'))
-    this.update()
+    this.$router.push({
+      path: this.dateM.format('yyyy-MM-DD'),
+    })
     this.dialogDatePicker = false
   }
 
