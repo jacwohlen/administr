@@ -16,7 +16,7 @@
           <v-list-item-avatar color="secondary" class="mr-3">
             <v-img v-if="m.img" :src="m.img" />
             <span v-else align="center" style="width: 100%">{{
-              userinitials(m.lastname, m.firstname)
+              userinitials(m)
             }}</span>
           </v-list-item-avatar>
           <v-list-item-content>
@@ -48,6 +48,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+
+import { Member } from 'types/models'
 
 import { administraStore } from '~/store'
 
@@ -81,8 +83,12 @@ export default class extends PrefilledProps {
     return administraStore.training.participants
   }
 
-  userinitials(firstname: string, lastname: string) {
-    return firstname[0] + lastname[0]
+  userinitials(m: Member) {
+    // FIXME: BUG: When adding a new particpant the retrieved list contains shortly an
+    // unresolved reference such as '/member/1234/'. I guess it's a bug of
+    // vuexfire. As a workaround I need to check if m contains 'lastname'.
+    if (m.lastname === undefined) return ''
+    return m.firstname[0] + m.lastname[0]
   }
 
   check(participantsIds: string[]) {
