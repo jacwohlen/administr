@@ -33,7 +33,12 @@
       </v-col>
     </v-row>
     <v-divider></v-divider>
-    <training-participant-list :trainingId="trainingId" :date="date" />
+    <v-row v-if="$fetchState.pending" class="mb-5 mt-5">
+      <v-col align="center">
+        <v-progress-circular indeterminate />
+      </v-col>
+    </v-row>
+    <training-participant-list v-else :trainingId="trainingId" :date="date" />
     <training-add-participant-box :trainingId="trainingId" />
     <v-btn text @click="back"><v-icon>mdi-arrow-left</v-icon> Back</v-btn>
   </div>
