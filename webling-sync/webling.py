@@ -42,7 +42,7 @@ def sync_members():
         u"birthday": prop["Geburtstag"],
         u"mobile": prop["Mobile"]
     }
-    db.collection(u'members').document(str(e["id"])).set(data)
+    db.collection(u'members').document(str(e["id"])).update(data)
 
 print("sync members... ")
 sync_members()
