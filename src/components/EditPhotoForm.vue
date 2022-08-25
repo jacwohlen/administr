@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <v-img v-if="img" :src="img" @click="edit" />
-    <span v-else align="center" style="width: 100%" @click="edit">{{
-      userinitials
-    }}</span>
+  <div @click="edit">
+    <slot v-if="img" name="img"></slot>
+    <slot v-else name="alt"></slot>
     <v-dialog v-model="dialog.show" persistent>
       <v-card>
         <v-card-title> Photo {{ firstname }} {{ lastname }} </v-card-title>
@@ -108,10 +106,6 @@ export default class extends Vue {
     if (this.image) {
       this.img = this.image
     }
-  }
-
-  get userinitials() {
-    return this.firstname[0] + this.lastname[0]
   }
 
   @Watch('camera')

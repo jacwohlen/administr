@@ -7,14 +7,23 @@
     </v-row>
     <v-row align="center" justify="center">
       <v-col>
-        <v-avatar size="200" color="secondary">
-          <edit-photo-form
-            :memberId="member.id"
-            :lastname="member.lastname"
-            :firstname="member.firstname"
-            :image="member.img"
-          />
-        </v-avatar>
+        <edit-photo-form
+          :memberId="member.id"
+          :lastname="member.lastname"
+          :firstname="member.firstname"
+          :image="member.img"
+        >
+          <template #img>
+            <v-avatar size="200" color="secondary">
+              <v-img :src="member.img" />
+            </v-avatar>
+          </template>
+          <template #alt>
+            <v-avatar size="200" color="secondary">
+              <span align="center" style="width: 100%">{{ userinitials }}</span>
+            </v-avatar>
+          </template>
+        </edit-photo-form>
       </v-col>
     </v-row>
 
@@ -66,6 +75,10 @@ export default class PresentListPage extends Vue {
 
   get member() {
     return administraStore.member
+  }
+
+  get userinitials() {
+    return this.member!.firstname[0] + this.member!.lastname[0]
   }
 
   back() {
