@@ -46,6 +46,14 @@
             <td><b>Mobile</b></td>
             <td>{{ member.mobile }}</td>
           </tr>
+          <tr>
+            <td><b>Labels</b></td>
+            <td>
+              <v-chip v-for="l in member.labels" :key="l" x-small>{{
+                l
+              }}</v-chip>
+            </td>
+          </tr>
         </tbody>
       </template>
     </v-simple-table>

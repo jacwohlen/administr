@@ -10,7 +10,12 @@
           }}</span>
         </v-list-item-avatar>
         <v-list-item-content>
-          {{ m.lastname }} {{ m.firstname }}
+          <v-list-item-title>
+            {{ m.lastname }} {{ m.firstname }}
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            <v-chip v-for="l in m.labels" :key="l" x-small>{{ l }}</v-chip>
+          </v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action>
           <v-btn text :to="'/dashboard/member/' + m.id"

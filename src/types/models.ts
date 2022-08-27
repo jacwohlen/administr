@@ -4,6 +4,7 @@ export interface Member {
   lastname: string
   birthday?: string
   mobile?: string
+  labels?: string[]
 }
 
 export interface Training {
