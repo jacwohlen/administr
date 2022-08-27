@@ -24,7 +24,21 @@ cred = credentials.Certificate("./serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
-print("db ready")
+
+def transform_label(label):
+  if label == "04_Probetraining":
+    return "Probetraining"
+  return label
+
+def get_label(membergroup_ids):
+  labels = []
+  for id in membergroup_ids:
+    api_url = f"https://{WEBLING_DOMAIN}.webling.ch/api/1/membergroup/{id}?apikey={WEBLING_API_KEY}&format=full"
+    response = requests.get(api_url)
+    label = transform_label(response.json()['properties']['title'])
+    labels.append(label)
+  return labels
+
 
 """ Create member in firebase for every webling """
 def sync_members():
@@ -35,18 +49,21 @@ def sync_members():
 
   for e in response.json():
     prop = e["properties"]
+    labels = get_label(e["parents"]) # membergroups -> titles
     print(f"ID: {e['id']}, Name: {prop['Name']}, Vorname: {prop['Vorname']}, Geburtstag: {prop['Geburtstag']} Mobile: {prop['Mobile']} ")
     data = {
         u"firstname": prop["Vorname"],
         u"lastname": prop["Name"],
         u"birthday": prop["Geburtstag"],
-        u"mobile": prop["Mobile"]
+        u"mobile": prop["Mobile"],
+        u"labels": labels
     }
-    db.collection(u'members').document(str(e["id"])).update(data)
+    db.collection(u'members').document(str(e["id"])).set(data, merge=True)
 
-print("sync members... ")
+#api_url = f"https://{WEBLING_DOMAIN}.webling.ch/api/1/member/3452?apikey={WEBLING_API_KEY}&format=full"
+#response = requests.get(api_url)
+#get_label(response.json()["parents"])
 sync_members()
-print("sync members done ")
 
 # print("Now in Firebase: ")
 # members = db.collection(u'members').stream()
