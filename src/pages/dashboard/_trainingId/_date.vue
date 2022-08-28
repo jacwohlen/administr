@@ -51,6 +51,16 @@ import moment from 'moment'
 
 import { administraStore } from '~/store'
 
+enum WEEKDAY {
+  Sunday = 0,
+  Monday = 1,
+  Tuesday = 2,
+  Wednesday = 3,
+  Thursday = 4,
+  Friday = 5,
+  Saturday = 6,
+}
+
 @Component({
   layout: 'DashboardLayout',
   async fetch() {
@@ -111,18 +121,9 @@ export default class PresentListPage extends Vue {
     this.dialogDatePicker = false
   }
 
-  // FIXME: Refactor
   allowedDates(val: string) {
-    const weekday = administraStore.training!.weekday
-    let n
-    if (weekday === 'Sunday') n = 0
-    if (weekday === 'Monday') n = 1
-    if (weekday === 'Tuesday') n = 2
-    if (weekday === 'Wednesday') n = 3
-    if (weekday === 'Thursday') n = 4
-    if (weekday === 'Friday') n = 5
-    if (weekday === 'Saturday') n = 6
-
+    const weekday: string = administraStore.training!.weekday
+    let n = (<any>WEEKDAY)[weekday]
     return new Date(val).getDay() === n
   }
 }
