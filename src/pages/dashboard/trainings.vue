@@ -1,15 +1,7 @@
 <template>
   <div>
     <h1 align="center" class="text-h5">All Trainings</h1>
-    <v-data-table
-      class="hidden-sm-and-down"
-      :items="trainings"
-      :headers="headers"
-      hide-default-footer
-      disable-sort
-    >
-    </v-data-table>
-    <v-list class="hidden-md-and-up">
+    <v-list>
       <v-list-item
         v-for="(t, idx) in trainings"
         :key="idx"
@@ -26,6 +18,17 @@
             <v-chip small>{{ t.section }}</v-chip>
           </v-list-item-subtitle>
         </v-list-item-content>
+        <v-list-item-action>
+          <v-btn
+            color="primary"
+            text
+            icon
+            :to="t.id + '/' + getDateOfWeekday(t.weekday)"
+          >
+            <v-icon left> mdi-format-list-checks </v-icon>
+            <span class="hidden-sm-and-down">Present List</span>
+          </v-btn>
+        </v-list-item-action>
       </v-list-item>
     </v-list>
   </div>
@@ -37,6 +40,7 @@ import Component from 'vue-class-component'
 
 import moment from 'moment'
 import { administraStore } from '~/store'
+import { WEEKDAY } from '~/types/models'
 
 Vue.filter('formatDate', function (value: FirebaseFirestore.Timestamp) {
   if (typeof value.toDate === 'function') {
@@ -47,16 +51,10 @@ Vue.filter('formatDate', function (value: FirebaseFirestore.Timestamp) {
 @Component({
   layout: 'DashboardLayout',
   async fetch() {
-    // server side
     await administraStore.init()
   },
 })
 export default class extends Vue {
-  async mounted() {
-    // client side
-    await administraStore.init()
-  }
-
   headers: any = [
     { text: 'Title', value: 'title' },
     { text: 'Start', value: 'dateFrom' },
@@ -64,6 +62,21 @@ export default class extends Vue {
     { text: 'Weekday', value: 'weekday' },
     { text: 'Section', value: 'section' },
   ]
+
+  getDateOfWeekday(weekday: string) {
+    let nToday: number = moment().isoWeekday()
+    let n: number = (<any>WEEKDAY)[weekday]
+    let date = undefined
+    if (nToday >= n) {
+      return moment()
+        .add(nToday - n, 'days')
+        .format('yyyy-MM-DD')
+    } else {
+      return moment()
+        .add(-7 - (nToday - n), 'days')
+        .format('yyyy-MM-DD')
+    }
+  }
 
   get trainings() {
     return administraStore.trainings

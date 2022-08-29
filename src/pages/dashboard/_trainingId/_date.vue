@@ -50,16 +50,7 @@ import Component from 'vue-class-component'
 import moment from 'moment'
 
 import { administraStore } from '~/store'
-
-enum WEEKDAY {
-  Sunday = 0,
-  Monday = 1,
-  Tuesday = 2,
-  Wednesday = 3,
-  Thursday = 4,
-  Friday = 5,
-  Saturday = 6,
-}
+import { WEEKDAY } from '~/types/models'
 
 @Component({
   layout: 'DashboardLayout',
