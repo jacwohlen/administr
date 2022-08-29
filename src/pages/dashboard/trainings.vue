@@ -22,7 +22,6 @@
           <v-btn
             color="primary"
             text
-            icon
             :to="t.id + '/' + getDateOfWeekday(t.weekday)"
           >
             <v-icon left> mdi-format-list-checks </v-icon>
