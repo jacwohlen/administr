@@ -17,16 +17,24 @@
             {{ t.weekday }}, {{ t.dateFrom }} - {{ t.dateTo }}
             <v-chip small>{{ t.section }}</v-chip>
           </v-list-item-subtitle>
+          {{ getLastDateOfWeekday(t.weekday) }}
         </v-list-item-content>
         <v-list-item-action>
-          <v-btn
-            color="primary"
-            text
-            :to="t.id + '/' + getDateOfWeekday(t.weekday)"
-          >
-            <v-icon left> mdi-format-list-checks </v-icon>
-            <span class="hidden-sm-and-down">Present List</span>
-          </v-btn>
+          <v-menu left bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item :to="'/dashboard/training/' + t.id">
+                <v-list-item-title>View</v-list-item-title>
+              </v-list-item>
+              <v-list-item :to="t.id + '/' + getLastDateOfWeekday(t.weekday)">
+                <v-list-item-title>Go to Presence List</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </v-list-item-action>
       </v-list-item>
     </v-list>
@@ -62,19 +70,14 @@ export default class extends Vue {
     { text: 'Section', value: 'section' },
   ]
 
-  getDateOfWeekday(weekday: string) {
-    let nToday: number = moment().isoWeekday()
-    let n: number = (<any>WEEKDAY)[weekday]
-    let date = undefined
-    if (nToday >= n) {
-      return moment()
-        .add(nToday - n, 'days')
-        .format('yyyy-MM-DD')
-    } else {
-      return moment()
-        .add(-7 - (nToday - n), 'days')
-        .format('yyyy-MM-DD')
+  getLastDateOfWeekday(weekday: string) {
+    let currentWeekday: number = moment().isoWeekday()
+    let targetWeekday: number = (<any>WEEKDAY)[weekday]
+    let daysUntilTargetWeekday = targetWeekday - currentWeekday
+    if (daysUntilTargetWeekday > 0) {
+      daysUntilTargetWeekday = daysUntilTargetWeekday - 7
     }
+    return moment().add(daysUntilTargetWeekday, 'days').format('yyyy-MM-DD')
   }
 
   get trainings() {

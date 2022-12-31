@@ -26,3 +26,8 @@ export interface Training {
   section: string
   participants: Member[]
 }
+
+export interface Log {
+  id: string // date
+  members: Member[]
+}

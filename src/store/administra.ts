@@ -3,7 +3,7 @@ import { firestoreAction } from 'vuexfire'
 
 import firebase from 'firebase/compat/app'
 
-import { Training, Member } from '~/types/models'
+import { Training, Member, Log } from '~/types/models'
 
 // Make sure id is not an hidden field
 // When SSR is copying the state from server to client the non emurated
@@ -29,6 +29,10 @@ export default class Administra extends VuexModule {
   trainingsByWeekday: Training[] = []
 
   member: Member | null = null
+
+  // Statistics
+  logsByTraining: Log[] = []
+  allLogs: Log[] = []
 
   get getTrainingsByWeekday() {
     return async (weekday: string) => {
@@ -186,7 +190,7 @@ export default class Administra extends VuexModule {
 
   @Action({ rawError: true })
   async init() {
-    const action = (await firestoreAction(({ bindFirestoreRef }) => {
+    const action = firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
           'trainings',
@@ -199,13 +203,13 @@ export default class Administra extends VuexModule {
           { wait: true, serialize: serializer }
         ),
       ])
-    })) as Function
+    }) as Function
     return await action(this.context)
   }
 
   @Action({ rawError: true })
   async initTraining({ trainingId }: { trainingId: string }) {
-    const action = (await firestoreAction(({ bindFirestoreRef }) => {
+    const action = firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
           'training',
@@ -213,13 +217,13 @@ export default class Administra extends VuexModule {
           { wait: true, serialize: serializer }
         ),
       ])
-    })) as Function
+    }) as Function
     return await action(this.context)
   }
 
   @Action({ rawError: true })
   async initMember({ memberId }: { memberId: string }) {
-    const action = (await firestoreAction(({ bindFirestoreRef }) => {
+    const action = firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
           'member',
@@ -227,7 +231,7 @@ export default class Administra extends VuexModule {
           { wait: true, serialize: serializer }
         ),
       ])
-    })) as Function
+    }) as Function
     return await action(this.context)
   }
 
@@ -240,7 +244,7 @@ export default class Administra extends VuexModule {
     date: string
   }) {
     if (!date) return
-    const action = (await firestoreAction(({ bindFirestoreRef }) => {
+    const action = firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
           'confirmedParticipants',
@@ -253,13 +257,13 @@ export default class Administra extends VuexModule {
           { wait: true, serialize: serializer }
         ),
       ])
-    })) as Function
+    }) as Function
     return await action(this.context)
   }
 
   @Action({ rawError: true })
   async initTrainingByWeekday(weekday: string) {
-    const action = (await firestoreAction(({ bindFirestoreRef }) => {
+    const action = firestoreAction(({ bindFirestoreRef }) => {
       return Promise.all([
         bindFirestoreRef(
           'trainingsByWeekday',
@@ -270,7 +274,39 @@ export default class Administra extends VuexModule {
           { wait: true, serialize: serializer }
         ),
       ])
-    })) as Function
+    }) as Function
+    return await action(this.context)
+  }
+
+  @Action({ rawError: true })
+  async initLogsByTraining({ trainingId }: { trainingId: string }) {
+    const action = firestoreAction(({ bindFirestoreRef }) => {
+      return Promise.all([
+        bindFirestoreRef(
+          'logsByTraining',
+          firebase
+            .firestore()
+            .collection('trainings')
+            .doc(trainingId)
+            .collection('log'),
+          { wait: true, serialize: serializer }
+        ),
+      ])
+    }) as Function
+    return await action(this.context)
+  }
+
+  @Action({ rawError: true })
+  async initAllLogs() {
+    const action = firestoreAction(({ bindFirestoreRef }) => {
+      return Promise.all([
+        bindFirestoreRef(
+          'allLogs',
+          firebase.firestore().collectionGroup('log'),
+          { wait: true, serialize: serializer }
+        ),
+      ])
+    }) as Function
     return await action(this.context)
   }
 }
